@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "list__additives".
  *
@@ -46,5 +46,11 @@ class ListAdditive extends \yii\db\ActiveRecord
             'description' => 'Описание',
             'toxicologists' => 'токсикологи и ПС',
         ];
+    }
+
+    public static function getListAdditive(){
+        $colors = ListAdditive::find()->all();
+
+        return ArrayHelper::map($colors, 'id', 'additive');
     }
 }

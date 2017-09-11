@@ -40,14 +40,14 @@ class Marks extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_mark', 'contact_with_food', 'description', 'update_date', 'create_date'], 'required'],
-            [['id_color', 'id_additive', 'heat_resistance', 'contact_with_food'], 'integer'],
-            [['light_fastness', 'pigment_migration', 'description'], 'string'],
-            [['polymer_content', 'humidity'], 'number'],
+            [['id_mark', 'contact_with_food', 'update_date', 'create_date'], 'required'],
+            [['id_color', 'id_additive', 'heat_resistance', 'light_fastness', 'pigment_migration', 'contact_with_food'], 'integer'],
+            [['description'], 'string'],
+            [['polymer_content', 'humidity'], 'number', 'max' => 100, 'min' => 0],
             [['update_date', 'create_date'], 'safe'],
             [['id_mark'], 'string', 'max' => 100],
-            [['norma_MFI'], 'string', 'max' => 20],
-            [['conditions_MFI', 'bulk_density', 'base_polymer'], 'string', 'max' => 50],
+            [['norma_MFI', 'bulk_density'], 'string', 'max' => 20],
+            [['conditions_MFI', 'base_polymer'], 'string', 'max' => 50],
         ];
     }
 
@@ -57,9 +57,9 @@ class Marks extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_mark' => 'Id Mark',
+            'id_mark' => 'Марка',
             'id_color' => 'Цвет',
-            'id_additive' => 'Добавки',
+            'id_additive' => 'Добавка',
             'heat_resistance' => 'Термостойкость',
             'light_fastness' => 'Светостойкость',
             'pigment_migration' => 'Миграция пигмента',
@@ -74,5 +74,15 @@ class Marks extends \yii\db\ActiveRecord
             'update_date' => 'Дата обновления запси',
             'create_date' => 'Дата создание запси',
         ];
+    }
+
+    public function getColor()
+    {
+        return $this->hasOne(ListColor::className(), ['id_color' => 'id_color']);
+    }
+
+    public function getAdditive()
+    {
+        return $this->hasOne(ListAdditive::className(), ['id' => 'id_additive']);
     }
 }

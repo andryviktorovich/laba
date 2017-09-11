@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "list__colors".
  *
@@ -44,4 +44,11 @@ class ListColor extends \yii\db\ActiveRecord
             'color_en' => 'Цвет на анг.',
         ];
     }
+
+    public static function getListColor(){
+        $colors = ListColor::find()->all();
+
+        return ArrayHelper::map($colors, 'id_color', 'color');
+    }
+
 }

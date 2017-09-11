@@ -44,6 +44,8 @@ AppAsset::register($this);
             ['label' => 'Списки', 'items' => [
                 ['label' => 'Список цветов', 'url' => '/list-color'],
                 ['label' => 'Список добавок', 'url' => '/list-additive'],
+                ['label' => 'Список полимеров', 'url' => '/list-polymer'],
+                ['label' => 'Список добавок', 'url' => '/list-additive'],
             ]],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
