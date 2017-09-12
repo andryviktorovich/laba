@@ -23,9 +23,9 @@ use app\models\ListConditionsMFI;
 
     <?= $form->field($model, 'heat_resistance')->textInput() ?>
 
-    <?= $form->field($model, 'light_fastness')->dropDownList([0,1,2,3,4,5,6,7,8]); ?>
+    <?= $form->field($model, 'light_fastness')->dropDownList([0,1,2,3,4,5,6,7,8],['prompt' => 'Не задано']); ?>
 
-    <?= $form->field($model, 'pigment_migration')->dropDownList([0,1,2,3,4,5]); ?>
+    <?= $form->field($model, 'pigment_migration')->dropDownList([0,1,2,3,4,5],['prompt' => 'Не задано']); ?>
 
     <?= $form->field($model, 'contact_with_food')->checkbox(); ?>
 
@@ -33,7 +33,7 @@ use app\models\ListConditionsMFI;
         'mask' => '9{0,4}[±5.0]',
     ])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'conditions_MFI')->dropDownList(ListConditionsMFI::getListConditionsMFI()) ?>
+    <?= $form->field($model, 'conditions_MFI')->dropDownList(ListConditionsMFI::getListConditionsMFI(),['prompt' => 'Не задано']) ?>
 
     <?= $form->field($model, 'bulk_density')->widget(\yii\widgets\MaskedInput::className(), [
         'mask' => '9{0,4}[±0.1]',
@@ -41,7 +41,7 @@ use app\models\ListConditionsMFI;
 
     <?= $form->field($model, 'polymer_content')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'base_polymer')->dropDownList(ListPolymer::getListPolymer()) ?>
+    <?= $form->field($model, 'base_polymer')->dropDownList(ListPolymer::getListPolymer(),['prompt' => 'Не задано']) ?>
 
     <?= $form->field($model, 'humidity')->textInput(['maxlength' => true]) ?>
 
