@@ -8,6 +8,7 @@ $this->title = 'My Yii Application';
 
     <ul>
         <li><a class="btn btn-default" href="/mark">Mark</a></li>
+        <li><a class="btn btn-default" href="/batch">Batches</a></li>
         <li><a class="btn btn-default" href="/list-color">list color</a></li>
         <li><a class="btn btn-default" href="/provider">provider</a></li>
         <li><a class="btn btn-default" href="/material">material</a></li>

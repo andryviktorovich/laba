@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "marks".
  *
@@ -84,5 +84,11 @@ class Marks extends \yii\db\ActiveRecord
     public function getAdditive()
     {
         return $this->hasOne(ListAdditive::className(), ['id' => 'id_additive']);
+    }
+
+    public static function getListMarks(){
+        $marks = Marks::find()->all();
+
+        return ArrayHelper::map($marks, 'id_mark', 'id_mark');
     }
 }

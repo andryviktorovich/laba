@@ -41,10 +41,11 @@ AppAsset::register($this);
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             ['label' => 'Марки', 'url' => ['/mark']],
+            ['label' => 'Партии', 'url' => ['/batch']],
             ['label' => 'Сырье', 'items' => [
                 ['label' => 'Список сырья', 'url' => '/material'],
                 ['label' => 'Поставки сырья', 'url' => '/material-coming'],
-                ['label' => 'Списание сырья', 'url' => '/list-polymer'],
+                ['label' => 'Списание сырья', 'url' => '/material-consumption'],
                 ['label' => 'Остаток на складе', 'url' => '/list-additive'],
             ]],
             ['label' => 'Списки', 'items' => [

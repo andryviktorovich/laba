@@ -48,7 +48,7 @@ class MaterialComing extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID поставки',
-            'id_material' => 'Сырье',
+            'id_material_' => 'Сырье',
             'id_provider' => 'Поставщик',
             'amount' => 'Количество, кг.',
             'cost' => 'Цена за кг.',
