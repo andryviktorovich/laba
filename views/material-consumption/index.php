@@ -4,38 +4,36 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\models\Material;
+use kartik\datetime\DateTimePicker;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\MaterialConsumptionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Material Consumptions';
+$this->title = 'Расход сырья';
 $this->params['breadcrumbs'][] = $this->title;
 
-//$mat = new Material();
-//print_r(Material::getInStock());
-//exit();
 $currentBatch = null;
 ?>
 <div class="material-consumption-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Material Consumption', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить расход', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'beforeRow' => function ($model, $key, $index, $grid) use (&$currentBatch)
             {
-                if($model->batch != $currentBatch) {
-                    $currentBatch = $model->batch;
+                if($model['batch'] != $currentBatch) {
+                    $currentBatch = $model['batch'];
                     return '<tr class="group-batch">
-                                <td  colspan=4>Партия: '.$model->batch.'</td>
+                                <td  colspan=4>Партия: '.$model['batch'].'</td>
                                     <td>
-                                        <a href="/material-consumption/update?id='. $model->batch. '" title="Редактировать" aria-label="Редактировать" data-pjax="0"><span class="glyphicon glyphicon-pencil"></span></a>
-                                        <a href="/material-consumption/delete?id='. $model->batch. '" title="Удалить" aria-label="Удалить" data-pjax="0" data-confirm="Вы уверены, что хотите удалить этот элемент?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <a href="/material-consumption/update?id='. $model['batch']. '" title="Редактировать" aria-label="Редактировать" data-pjax="0"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="/material-consumption/delete?id='. $model['batch']. '" title="Удалить" aria-label="Удалить" data-pjax="0" data-confirm="Вы уверены, что хотите удалить этот элемент?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>
                                      </td>
                                 </tr>';
                 }
@@ -44,11 +42,35 @@ $currentBatch = null;
         'columns' => [
 //            ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'id_material_coming',
-//            'batch',
+            [
+                'attribute' => 'id',
+                'headerOptions' => ['width' => '80'],
+            ],
+            [
+                'attribute'=>'material',
+                'format'=>'text', // Возможные варианты: raw, html
+                'filter' => Material::getListMaterials()
+            ],
             'amount',
-            'date_consuption',
+//            'date_consumption',
+            [
+                'attribute' => 'date_consumption',
+                'value' => 'date_consumption',
+//                'format' =>  ['date', 'dd.MM.Y'],
+                'filter' => DateTimePicker::widget([
+                    'model' => $searchModel,
+                    'name' => 'MaterialConsumptionSearch[date_consumption]',
+                    'value' => $searchModel->date_consumption,
+                    'pluginOptions' => [
+                        'minView' => 'month',
+                        'format' => 'yyyy-mm-dd',
+                        'autoclose' => true,
+                        'todayBtn'=>true, //снизу кнопка "сегодня"
+                        'todayHighlight' => true,
+                    ]
+                ])
+
+            ],
             // 'update_date',
             // 'create_date',
 

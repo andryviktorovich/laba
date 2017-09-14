@@ -5,17 +5,18 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\MaterialConsumption */
 
-$this->title = 'Update Material Consumption: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Material Consumptions', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Изменение рассхода сырья на партию: ' . $batch;
+$this->params['breadcrumbs'][] = ['label' => 'Расход сырья', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Изменение';
 ?>
 <div class="material-consumption-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'items' => $items,
+        'batch' => $batch
     ]) ?>
 
 </div>

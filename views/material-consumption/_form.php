@@ -1,45 +1,117 @@
 <?php
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\Batch;
+use app\models\Material;
 use kartik\datetime\DateTimePicker;
+use wbraganca\dynamicform\DynamicFormWidget;
 /* @var $this yii\web\View */
 /* @var $model app\models\MaterialConsumption */
+/* @var $items app\models\MaterialConsumption[] */
+
 /* @var $form yii\widgets\ActiveForm */
+$js = '
+jQuery(".dynamicform_wrapper").on("afterInsert", function(e, item) {
+    jQuery(".dynamicform_wrapper .panel-title-address").each(function(index) {
+        jQuery(this).html("Расход: " + (index + 1))
+    });
+});
+
+jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
+    jQuery(".dynamicform_wrapper .panel-title-address").each(function(index) {
+        jQuery(this).html("Расход: " + (index + 1))
+    });
+});
+';
+
+$this->registerJs($js);
 ?>
+
+
 
 <div class="material-consumption-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
 
-    <?= $form->field($model, 'id_material_coming')->textInput() ?>
 
-    <?= $form->field($model, 'batch')->dropDownList(Batch::getListBatches()) ?>
-
-    <?= $form->field($model, 'amount')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'date_consuption')->widget(DateTimePicker::className(),[
-        'options' => ['placeholder' => 'Ввод даты'],
-        'pluginOptions' => [
-            'minView' => 'month',
-            'format' => 'yyyy-mm-dd',
-            'autoclose'=>true,
-            'todayHighlight' => true,
-            'todayBtn'=>true, //снизу кнопка "сегодня"
-        ]
+    <?php DynamicFormWidget::begin([
+        'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
+        'widgetBody' => '.container-items', // required: css class selector
+        'widgetItem' => '.item', // required: css class
+        'limit' => 4, // the maximum times, an element can be cloned (default 999)
+        'min' => 1, // 0 or 1 (default 1)
+        'insertButton' => '.add-item', // css class
+        'deleteButton' => '.remove-item', // css class
+        'model' => $items[0],
+        'formId' => 'dynamic-form',
+        'formFields' => [
+            'id_material_coming',
+            'batch',
+            'amount',
+            'date_consumption',
+            'update_date',
+        ],
     ]); ?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-envelope"></i> Расходы:
+            <button type="button" class="pull-right add-item btn btn-success btn-xs"><i class="fa fa-plus"></i> Добавить рассход</button>
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body container-items"><!-- widgetContainer -->
+            <?php foreach ($items as $index => $item): ?>
+                <div class="item panel panel-default"><!-- widgetBody -->
+                    <div class="panel-heading">
+                        <span class="panel-title-address">Расход: <?= ($index + 1) ?></span>
+                        <button type="button" class="pull-right remove-item btn btn-danger btn-xs"><i class="fa fa-minus"></i></button>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-body">
+                        <?php
+                        // necessary for update action.
+                        if (!$item->isNewRecord) {
+                            echo Html::activeHiddenInput($item, "[{$index}]id");
+                        }
+                        ?>
+                        <?= $form->field($item, "[{$index}]update_date")->hiddenInput(['value' => date('Y-m-d h:i:s')])->label(false) ?>
+                        <?php if($item->isNewRecord): ?>
+                            <?= $form->field($item, "[{$index}]create_date")->hiddenInput(['value' => date('Y-m-d h:i:s')])->label(false) ?>
+                        <?php endif; ?>
 
-    <?= $form->field($model, 'update_date')->hiddenInput(['value' => date('Y-m-d h:i:s')])->label(false) ?>
+                        <?= $form->field($item,"[{$index}]id_material_coming")->dropDownList(Material::getInStock(),['prompt' => 'Выберите сырье со склада']); ?>
+                        <?= $form->field($item,"[{$index}]batch")->dropDownList(Batch::getListBatches(),['prompt' => 'Выберите партию']) ?>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <?= $form->field($item,"[{$index}]amount") ?>
+                            </div>
+                            <div class="col-sm-6">
+                                <?= $form->field($item,"[{$index}]date_consumption")->widget(DateTimePicker::className(),[
+                                    'options' => ['placeholder' => 'Ввод даты'],
+                                    'pluginOptions' => [
+                                        'minView' => 'month',
+                                        'format' => 'yyyy-mm-dd',
+                                        'autoclose'=>true,
+                                        'todayHighlight' => true,
+                                        'todayBtn'=>true, //снизу кнопка "сегодня"
+                                    ]
+                                ]); ?>
+                            </div>
+                        </div><!-- .row -->
 
-    <?php if($model->isNewRecord): ?>
-        <?= $form->field($model, 'create_date')->hiddenInput(['value' => date('Y-m-d h:i:s')])->label(false) ?>
-    <?php endif; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php DynamicFormWidget::end(); ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($item->isNewRecord ? 'Create' : 'Update', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
+
 
 </div>

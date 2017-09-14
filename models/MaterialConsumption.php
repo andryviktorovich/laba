@@ -11,7 +11,7 @@ use Yii;
  * @property integer $id_material_coming
  * @property string $batch
  * @property string $amount
- * @property string $date_consuption
+ * @property string $date_consumption
  * @property string $update_date
  * @property string $create_date
  */
@@ -31,10 +31,10 @@ class MaterialConsumption extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_material_coming', 'batch', 'amount', 'date_consuption', 'update_date', 'create_date'], 'required'],
+            [['id_material_coming', 'batch', 'amount', 'date_consumption', 'update_date', 'create_date'], 'required'],
             [['id_material_coming'], 'integer'],
             [['amount'], 'number'],
-            [['date_consuption', 'update_date', 'create_date'], 'safe'],
+            [['date_consumption', 'update_date', 'create_date'], 'safe'],
             [['batch'], 'string', 'max' => 50],
         ];
     }
@@ -48,15 +48,18 @@ class MaterialConsumption extends \yii\db\ActiveRecord
             'id' => 'ID расхода',
             'id_material_coming' => 'Сырье',
             'batch' => 'Партия',
-            'amount' => 'Количество',
-            'date_consuption' => 'Дата списания',
+            'amount' => 'Количество, кг.',
+            'date_consumption' => 'Дата списания',
             'update_date' => 'Дата изменения записи',
             'create_date' => 'Дата создания записи',
         ];
     }
 
-    public function loadManyObjects($data){
-
+    public  function getItemsToUpdate($batch){
+        return MaterialConsumption::find()
+                    ->where(['batch' => $batch])
+                    ->orderBy('date_consumption')
+                    ->all();
     }
 
     public function getMaterial(){

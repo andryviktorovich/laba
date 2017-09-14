@@ -5,13 +5,14 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\MaterialConsumption;
+use yii\data\SqlDataProvider;
 
 /**
  * MaterialConsumptionSearch represents the model behind the search form about `app\models\MaterialConsumption`.
  */
 class MaterialConsumptionSearch extends MaterialConsumption
 {
+    public $material;
     /**
      * @inheritdoc
      */
@@ -19,7 +20,7 @@ class MaterialConsumptionSearch extends MaterialConsumption
     {
         return [
             [['id', 'id_material_coming'], 'integer'],
-            [['batch', 'date_consuption', 'update_date', 'create_date'], 'safe'],
+            [['batch', 'material', 'date_consumption', 'update_date', 'create_date'], 'safe'],
             [['amount'], 'number'],
         ];
     }
@@ -42,44 +43,46 @@ class MaterialConsumptionSearch extends MaterialConsumption
      */
     public function search($params)
     {
-        $query = MaterialConsumption::find();
+        $this->load($params);
+        $where = "1";
 
-        // add conditions that should always apply here
+        if (!$this->validate()) {
+            $where = "1";
+        } else {
+            $whereParams = [  'cun.id' => $this->id,
+                        'com.id_material' => $this->material,
+                        'cun.amount' => $this->amount,
+                        'cun.date_consumption' => $this->date_consumption,
+//                        'cun.update_date' => $this->update_date,
+//                        'cun.create_date' => $this->create_date,
+                    ];
+            foreach ($whereParams as $key => $item){
+                if(!empty($item)){
+                    $item = gettype($item) == "string" ? "'" . $item . "'" : $item;
+                    $where .= " AND $key = $item";
+                }
+            }
+            if(!empty($this->batch))
+                $where .= " AND cun.batch LIKE '" . $this->batch . "'";
+        }
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+        $sql = "SELECT cun.*, m.title AS material
+
+                FROM materials_consumption cun
+                LEFT JOIN ( SELECT batch, MAX(date_consumption) AS date_last
+                            FROM materials_consumption
+                            GROUP by batch) b ON b.batch = cun.batch
+                LEFT JOIN materials_coming com ON com.id = cun.id_material_coming
+                LEFT JOIN materials m ON m.id = com.id_material
+                WHERE " . $where . "
+                ORDER by b.date_last DESC, cun.date_consumption DESC ";
+
+        $dataProvider = new SqlDataProvider([
+            'sql' => $sql,
             'pagination' => [
                 'pageSize' => 50,
             ],
-            'sort'=>
-                [
-                    'defaultOrder'=>
-                        [
-                            'date_consuption'=>SORT_DESC
-                        ]
-                ]
         ]);
-
-        $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
-
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'id_material_coming' => $this->id_material_coming,
-            'amount' => $this->amount,
-            'date_consuption' => $this->date_consuption,
-            'update_date' => $this->update_date,
-            'create_date' => $this->create_date,
-        ]);
-
-        $query->andFilterWhere(['like', 'batch', $this->batch]);
-
         return $dataProvider;
     }
 }

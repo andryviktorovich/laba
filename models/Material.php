@@ -86,6 +86,6 @@ class Material extends \yii\db\ActiveRecord
         ";
 
         $data = Yii::$app->db->createCommand($sql)->queryAll();
-        return $data;//ArrayHelper::map($data, 'id', 'title');
+        return ArrayHelper::map($data, 'id', 'title');
     }
 }
