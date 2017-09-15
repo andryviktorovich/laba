@@ -6,6 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\MaterialComing */
 
 $this->title = 'Изменение поставки сырья Id: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Остаток на складе', 'url' => ['/material-consumption/in-stock']];
 $this->params['breadcrumbs'][] = ['label' => 'Поставки сыря', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => 'Id поставки: ' . $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Изменение';

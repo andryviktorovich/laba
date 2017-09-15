@@ -10,6 +10,7 @@ use kartik\datetime\DateTimePicker;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Расход сырья';
+$this->params['breadcrumbs'][] = ['label' => 'Остаток на складе', 'url' => ['in-stock']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $currentBatch = null;
@@ -48,6 +49,7 @@ $currentBatch = null;
             ],
             [
                 'attribute'=>'material',
+                'label' => 'Сырье',
                 'format'=>'text', // Возможные варианты: raw, html
                 'filter' => Material::getListMaterials()
             ],

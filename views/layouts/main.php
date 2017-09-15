@@ -45,8 +45,8 @@ AppAsset::register($this);
             ['label' => 'Сырье', 'items' => [
                 ['label' => 'Список сырья', 'url' => '/material'],
                 ['label' => 'Поставки сырья', 'url' => '/material-coming'],
-                ['label' => 'Списание сырья', 'url' => '/material-consumption'],
-                ['label' => 'Остаток на складе', 'url' => '/list-additive'],
+                ['label' => 'Расход сырья', 'url' => '/material-consumption'],
+                ['label' => 'Остаток на складе', 'url' => '/material-consumption/in-stock'],
             ]],
             ['label' => 'Списки', 'items' => [
                 ['label' => 'Список цветов', 'url' => '/list-color'],

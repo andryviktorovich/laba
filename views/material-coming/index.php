@@ -10,6 +10,7 @@ use app\models\Provider;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Поставки материалов';
+$this->params['breadcrumbs'][] = ['label' => 'Остаток на складе', 'url' => ['/material-consumption/in-stock']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="material-coming-index">

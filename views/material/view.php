@@ -7,6 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Material */
 
 $this->title = $model->title;
+$this->params['breadcrumbs'][] = ['label' => 'Остаток на складе', 'url' => ['/material-consumption/in-stock']];
 $this->params['breadcrumbs'][] = ['label' => 'Сырье', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\MaterialInStock;
 use Yii;
 use app\models\MaterialConsumption;
 use app\models\MaterialConsumptionSearch;
@@ -9,6 +10,7 @@ use app\base\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 //use yii\base\Model;
 
 /**
@@ -46,17 +48,30 @@ class MaterialConsumptionController extends Controller
         ]);
     }
 
+    public function actionInStock()
+    {
+        $items = [new MaterialConsumption];
+        $searchModel = new MaterialInStock();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('instock', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'items' => $items,
+        ]);
+    }
+
     /**
      * Displays a single MaterialConsumption model.
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+//    public function actionView($id)
+//    {
+//        return $this->render('view', [
+//            'model' => $this->findModel($id),
+//        ]);
+//    }
 
     /**
      * Creates a new MaterialConsumption model.
@@ -65,35 +80,25 @@ class MaterialConsumptionController extends Controller
      */
     public function actionCreate()
     {
-//        $modelCustomer = new Customer;
         $items = [new MaterialConsumption];
-
-//        if (Model::loadMultiple($items, Yii::$app->request->post()) &&
-//            Model::validateMultiple($items)) {
 
         if (Yii::$app->request->isPost) {
 
             $items = Model::createMultiple(MaterialConsumption::classname());
             Model::loadMultiple($items, Yii::$app->request->post());
 
-            // validate all models
-//            $valid = $modelCustomer->validate();
-//            $valid = ) && $valid;
 
             if (Model::validateMultiple($items)) {
                 $transaction = \Yii::$app->db->beginTransaction();
 
                 try {
                     $flag = true;
-//                    if ($flag = $modelCustomer->save(false)) {
-                        foreach ($items as $item) {
-//                            $item->customer_id = $modelCustomer->id;
-                            if (! ($flag = $item->save(false))) {
-                                $transaction->rollBack();
-                                break;
-                            }
+                    foreach ($items as $item) {
+                        if (! ($flag = $item->save(false))) {
+                            $transaction->rollBack();
+                            break;
                         }
-//                    }
+                    }
 
                     if ($flag) {
                         $transaction->commit();
@@ -108,18 +113,6 @@ class MaterialConsumptionController extends Controller
         return $this->render('create', [
             'items' => (empty($items)) ? [new MaterialConsumption] : $items
         ]);
-
-
-//        $model = new materialconsumption();
-//        $model->adddefaultparam();
-//        if ($model->load(yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->id]);
-//        } else {
-//            return $this->renderajax('create', [
-//                'model' => $model,
-//                'number' => $number
-//            ]);
-//        }
     }
 
     /**
@@ -130,39 +123,44 @@ class MaterialConsumptionController extends Controller
      */
     public function actionUpdate($id)
     {
-//        $model = $this->findModel($id);
-//
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->id]);
-//        } else {
-//            return $this->render('update', [
-//                'model' => $model,
-//            ]);
-//        }
+        $items = MaterialConsumption::findAll(['batch' => $id]);
 
-        $items = MaterialConsumption::findAll(['batch' => $id]);//MaterialConsumption::getItemsToUpdate($id);
-//        var_dump($items);
-//        exit();
-//        print_r(Yii::$app->request->post());
-        if (Model::loadMultiple($items, Yii::$app->request->post()) &&
-            Model::validateMultiple($items)) {
-            $count = 0;
-            foreach ($items as $item) {
-                // populate and save records for each model
-                if ($item->save()) {
-                    // do something here after saving
-                    $count++;
+        if (Yii::$app->request->isPost) {
+
+            $oldIDs = ArrayHelper::map($items, 'id', 'id');
+            $items = Model::createMultiple(MaterialConsumption::classname(), $items);
+            Model::loadMultiple($items, Yii::$app->request->post());
+            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($items, 'id', 'id')));
+
+            if (Model::validateMultiple($items)) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    $flag = true;
+                    if (!empty($deletedIDs)) {
+                        MaterialConsumption::deleteAll(['id' => $deletedIDs]);
+                    }
+                    foreach ($items as $item) {
+
+                        if (! ($flag = $item->save(false))) {
+                            $transaction->rollBack();
+                            break;
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['index']);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
                 }
+
             }
-            Yii::$app->session->setFlash('success', "Processed {$count} records successfully.");
-            return $this->redirect(['index']); // redirect to your next desired page
-        } else {
-//            var_dump($items);
-            return $this->render('update', [
+        }
+
+        return $this->render('update', [
                 'items' => $items,
                 'batch' => $id
-            ]);
-        }
+        ]);
     }
 
     /**
@@ -173,7 +171,9 @@ class MaterialConsumptionController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (MaterialConsumption::deleteAll(['batch' => $id])) {
+            Yii::$app->session->setFlash('success', 'Record batch  <strong>"' . $id . '"</strong> deleted successfully.');
+        }
 
         return $this->redirect(['index']);
     }

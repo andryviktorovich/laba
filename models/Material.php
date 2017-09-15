@@ -4,7 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\db\Connection;
+
 /**
  * This is the model class for table "materials".
  *
@@ -68,24 +68,5 @@ class Material extends \yii\db\ActiveRecord
         $materials = Material::find()->all();
 
         return ArrayHelper::map($materials, 'id', 'title');
-    }
-
-    public static function getInStock(){
-        $sql = "SELECT com.id,
-                       com.id_material,
-                       m.title AS material_title,
-                       (com.amount - IFNULL(cun.amount,0)) as amount,
-                       cost,
-                       date_coming,
-                       CONCAT(m.title, '(цена -', cost, ') - ', (com.amount - IFNULL(cun.amount,0)), ' кг') as title
-                FROM (materials_coming com, materials m)
-                LEFT JOIN ( SELECT id_material_coming, SUM(amount) AS amount
-                            FROM materials_consumption
-                            GROUP by id_material_coming) cun ON com.id = cun.id_material_coming
-                WHERE (com.amount - IFNULL(cun.amount,0)) != 0 AND m.id = com.id_material
-        ";
-
-        $data = Yii::$app->db->createCommand($sql)->queryAll();
-        return ArrayHelper::map($data, 'id', 'title');
     }
 }

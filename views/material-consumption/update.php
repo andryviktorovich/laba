@@ -6,6 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\MaterialConsumption */
 
 $this->title = 'Изменение рассхода сырья на партию: ' . $batch;
+$this->params['breadcrumbs'][] = ['label' => 'Остаток на складе', 'url' => ['in-stock']];
 $this->params['breadcrumbs'][] = ['label' => 'Расход сырья', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Изменение';
