@@ -120,3 +120,14 @@ a.desc:after {
 .red {
     color: red;
 }
+.formula-form {
+
+}
+.formula-form .formula-total {
+    font-weight: bold;
+    text-align: center;
+}
+
+.formula-form .formula-cost-mark {
+    text-align: center;
+}
