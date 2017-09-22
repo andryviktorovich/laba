@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
  * @property string $id_mark
  * @property string $cost
  * @property string $amount
+ * @property string $id_formula
  * @property string $release_date
  * @property string $update_date
  * @property string $create_date
@@ -33,6 +34,7 @@ class Batch extends \yii\db\ActiveRecord
         return [
             [['batch', 'id_mark', 'amount', 'release_date', 'update_date', 'create_date'], 'required'],
             [['cost', 'amount'], 'number'],
+            [['id_formula'], 'integer'],
             [['release_date', 'update_date', 'create_date'], 'safe'],
             [['batch'], 'string', 'max' => 50],
             [['id_mark'], 'string', 'max' => 100],
@@ -49,6 +51,7 @@ class Batch extends \yii\db\ActiveRecord
             'id_mark' => 'Марка',
             'cost' => 'Цена за кг.',
             'amount' => 'Количество, кг.',
+            'id_formula' => 'Формула',
             'release_date' => 'Дата выпуска',
             'update_date' => 'Дата изменения',
             'create_date' => 'Дата создания',

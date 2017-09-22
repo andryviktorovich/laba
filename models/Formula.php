@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use yii\data\SqlDataProvider;
 /**
  * This is the model class for table "formula".
  *
@@ -15,6 +15,12 @@ use Yii;
  */
 class Formula extends \yii\db\ActiveRecord
 {
+    CONST STATUS_UNKNOWN = -1;
+    CONST STATUS_NOT_USED = 0;
+    CONST STATUS_ONE_USE = 1;
+    CONST STATUS_MORE_ONE_USED = 2;
+
+    public $status;
     /**
      * @inheritdoc
      */
@@ -26,8 +32,7 @@ class Formula extends \yii\db\ActiveRecord
     public function __construct()
     {
         parent::__construct();
-//        $this->update_date = date('Y-m-d h:i:s');
-//        $this->create_date = date('Y-m-d h:i:s');
+        $this->status = self::STATUS_UNKNOWN;
     }
 
     /**
@@ -89,5 +94,30 @@ class Formula extends \yii\db\ActiveRecord
         }
 
         return $valid;
+    }
+
+    public function searchElements(){
+        $sql = "SELECT f.*, m.title AS material, ROUND(IFNULL(f.percent,0)/100*IFNULL(f.cost,0), 3) AS costM
+                FROM formula_elements f, materials m
+                WHERE m.id = f.id_material AND f.id_formula = " . (is_null($this->id_formula) ? 'NULL' : $this->id_formula);
+
+        $dataProvider = new SqlDataProvider([
+            'sql' => $sql,
+            'pagination' => false,
+        ]);
+        return $dataProvider;
+    }
+
+    public function getStatus(){
+        if(empty($this->id_formula)){
+            return self::STATUS_UNKNOWN;
+        }
+        $sql = "SELECT COUNT(b.batch) AS count
+                FROM formula f, batches b
+                WHERE f.id_formula = b.id_formula AND f.id_formula = $this->id_formula";
+        $count = Yii::$app->db->createCommand($sql)->queryScalar();
+        if($count > 1 ) return self::STATUS_MORE_ONE_USED;
+        elseif($count == 1) return self::STATUS_ONE_USE;
+        else return self::STATUS_NOT_USED;
     }
 }

@@ -5,9 +5,16 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Formula */
+/* @var $modelBatch app\models\Batch */
 
 $this->title = 'Добавление формулы';
-$this->params['breadcrumbs'][] = ['label' => 'Формулы', 'url' => ['index']];
+if($modelBatch !== null) {
+    $this->params['breadcrumbs'][] = ['label' => 'Партии', 'url' => ['index']];
+    $this->params['breadcrumbs'][] = ['label' => $modelBatch->batch, 'url' => ['/batch/view', 'id' => $modelBatch->batch]];
+    $this->params['breadcrumbs'][] = ['label' => 'Выбор формулы', 'url' => ['/batch/choose-formula', 'id' => $modelBatch->batch]];
+} else {
+    $this->params['breadcrumbs'][] = ['label' => 'Формулы', 'url' => ['index']];
+}
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="formula-create">

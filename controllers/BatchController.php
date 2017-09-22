@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\Formula;
 use Yii;
 use app\models\Batch;
 use app\models\BatchSearch;
+use app\models\FormulaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -51,8 +53,13 @@ class BatchController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $modelFormula = Formula::findOne($model->id_formula);
+//        $modelFormula->getStatus();
+        $dataProvider = $modelFormula->searchElements();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider
         ]);
     }
 
@@ -83,12 +90,30 @@ class BatchController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->batch]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+            ]);
+        }
+    }
+
+    public function actionChooseFormula($id){
+
+        $model = $this->findModel($id);
+//        if (Yii::$app->request->isPost) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            var_dump($model->load(Yii::$app->request->post()));
+//            print_r($model);
+//            print_r(Yii::$app->request->post());exit();
+            return $this->redirect(['view', 'id' => $model->batch]);
+        } else {
+            $dataProvider = (new FormulaSearch)->searchByBatch($id);
+            return $this->render('choose', [
+                //                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'batch' => $model
             ]);
         }
     }

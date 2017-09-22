@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Formula;
+
 
 /**
  * FormulaSearch represents the model behind the search form about `app\models\Formula`.
@@ -68,5 +68,30 @@ class FormulaSearch extends Formula
             ->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
+    }
+
+    public function searchByBatch($batchId){
+        if (($batch = Batch::findOne($batchId)) !== null) {
+            $query = Formula::find()->where(['id_mark' => $batch->id_mark]);
+
+            // add conditions that should always apply here
+
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'sort'=>
+                    [
+                        'defaultOrder' =>
+                            [
+                                'update_date' => SORT_DESC
+                            ]
+                    ],
+                'pagination' => [
+                    'pageSize' => 10,
+                ],
+            ]);
+
+            return $dataProvider;
+        }
+        return null;
     }
 }

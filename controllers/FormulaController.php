@@ -2,12 +2,13 @@
 
 namespace app\controllers;
 
-use app\models\FormulaElementsSearch;
+
 use Yii;
 use app\base\Model;
 use app\models\Formula;
 use app\models\FormulaSearch;
 use app\models\FormulaElements;
+use app\models\Batch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -56,8 +57,8 @@ class FormulaController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        $searchModel = new FormulaElementsSearch();
-        $dataProvider = $searchModel->search($id);
+//        $model->getStatus();
+        $dataProvider = $model->searchElements();
         return $this->render('view', [
             'model' => $model,
             'dataProvider' => $dataProvider,
@@ -69,10 +70,14 @@ class FormulaController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($batch = null)
     {
         $modelFormula = new Formula();
         $modelFormulaElements = [new FormulaElements];
+
+        if (($modelBatch = Batch::findOne($batch)) !== null) {
+            $modelFormula->id_mark = $modelBatch->id_mark;
+        }
 
         if ($modelFormula->load(Yii::$app->request->post())) {
 
@@ -99,7 +104,12 @@ class FormulaController extends Controller
 
                     if ($flag) {
                         $transaction->commit();
-                        return $this->redirect(['view', 'id' => $modelFormula->id_formula]);
+                        if($modelBatch !== null) {
+                            return $this->redirect(['/batch/choose-formula', 'id' => $modelBatch->batch]);
+                        } else {
+                            return $this->redirect(['view', 'id' => $modelFormula->id_formula]);
+                        }
+
 //                        return $this->redirect(['index']);
                     }
                 } catch (Exception $e) {
@@ -109,6 +119,7 @@ class FormulaController extends Controller
         }
 
         return $this->render('create', [
+            'modelBatch' => $modelBatch,
             'modelFormula' => $modelFormula,
             'modelFormulaElements' => (empty($modelFormulaElements)) ? [new FormulaElements] : $modelFormulaElements
         ]);
@@ -121,10 +132,12 @@ class FormulaController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $batch = null)
     {
         $modelFormula = $this->findModel($id);
         $modelFormulaElements = $modelFormula->elements;
+
+        $modelBatch = Batch::findOne($batch);
 
         if ($modelFormula->load(Yii::$app->request->post())) {
 
@@ -154,7 +167,11 @@ class FormulaController extends Controller
                     }
                     if ($flag) {
                         $transaction->commit();
-                        return $this->redirect(['view', 'id' => $modelFormula->id_formula]);
+                        if($modelBatch !== null) {
+                            return $this->redirect(['/batch/view', 'id' => $modelBatch->batch]);
+                        } else {
+                            return $this->redirect(['view', 'id' => $modelFormula->id_formula]);
+                        }
 //                        return $this->redirect(['index']);
                     }
                 } catch (Exception $e) {
@@ -163,6 +180,7 @@ class FormulaController extends Controller
             }
         }
         return $this->render('update', [
+            'modelBatch' => $modelBatch,
             'modelFormula' => $modelFormula,
             'modelFormulaElements' => (empty($modelFormulaElements)) ? [new FormulaElements] : $modelFormulaElements
         ]);

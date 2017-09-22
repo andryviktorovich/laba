@@ -47,4 +47,18 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+    <?php if($model->id_formula == null): ?>
+        <h3>Формула не задана!</h3>
+        <p>
+            <?= Html::a('Выбрать формулу', ['choose-formula', 'id' => $model->batch], ['class' => 'btn btn-primary']) ?>
+        </p>
+    <?php else: ?>
+        <p>
+            <?= Html::a('Выбрать другую формулу', ['choose-formula', 'id' => $model->batch], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Редактировать формулу', ['/formula/update', 'id' => $model->id_formula, 'batch' => $model->batch], ['class' => 'btn btn-primary']) ?>
+        </p>
+        <?= $this->render('/formula/_formula', [
+            'dataProvider' => $dataProvider,
+        ]) ?>
+    <?php endif; ?>
 </div>
