@@ -13,11 +13,15 @@ use yii\helpers\ArrayHelper;
  * @property string $amount
  * @property string $id_formula
  * @property string $release_date
+ * @property string $active
  * @property string $update_date
  * @property string $create_date
  */
-class Batch extends \yii\db\ActiveRecord
+class Batch extends \app\base\BaseModel
 {
+    CONST ACTIVE = 1;
+    CONST NO_ACTIVE = 0;
+
     /**
      * @inheritdoc
      */
@@ -32,12 +36,13 @@ class Batch extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['batch', 'id_mark', 'amount', 'release_date', 'update_date', 'create_date'], 'required'],
+            [['batch', 'id_mark', 'amount', 'release_date'], 'required'],
             [['cost', 'amount'], 'number'],
             [['id_formula'], 'integer'],
             [['release_date', 'update_date', 'create_date'], 'safe'],
             [['batch'], 'string', 'max' => 50],
             [['id_mark'], 'string', 'max' => 100],
+            ['active', 'default', 'value' => 1],
         ];
     }
 
@@ -59,7 +64,7 @@ class Batch extends \yii\db\ActiveRecord
     }
 
     public static function getListBatches(){
-        $batches = Batch::find()->all();
+        $batches = Batch::find()->where(['active' => 1])->all();
 
         return ArrayHelper::map($batches, 'batch', 'batch');
     }
@@ -67,5 +72,21 @@ class Batch extends \yii\db\ActiveRecord
     public function getMark()
     {
         return $this->hasOne(Marks::className(), ['id_mark' => 'id_mark']);
+    }
+
+    public function delete()
+    {
+        $this->active = self::NO_ACTIVE;
+        return $this->save();
+    }
+
+    public static function findOne($condition)
+    {
+        $model = parent::findOne($condition);
+        if($model->active) {
+            return $model;
+        } else {
+            return null;
+        }
     }
 }

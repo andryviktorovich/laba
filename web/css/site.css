@@ -131,3 +131,7 @@ a.desc:after {
 .formula-form .formula-cost-mark {
     text-align: center;
 }
+
+.table  tr.success  td {
+    background-color: #DFEE66 !important;
+}

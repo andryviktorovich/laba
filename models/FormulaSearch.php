@@ -41,12 +41,23 @@ class FormulaSearch extends Formula
      */
     public function search($params)
     {
-        $query = Formula::find();
+        $query = Formula::find()->where(['active' => 1]);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=>
+                [
+                    'defaultOrder' =>
+                        [
+                            'id_mark' => SORT_ASC,
+                            'update_date' => SORT_DESC,
+                        ]
+                ],
+            'pagination' => [
+                'pageSize' => 10,
+            ],
         ]);
 
         $this->load($params);
@@ -72,7 +83,7 @@ class FormulaSearch extends Formula
 
     public function searchByBatch($batchId){
         if (($batch = Batch::findOne($batchId)) !== null) {
-            $query = Formula::find()->where(['id_mark' => $batch->id_mark]);
+            $query = Formula::find()->where(['id_mark' => $batch->id_mark, 'active' => 1]);
 
             // add conditions that should always apply here
 

@@ -7,9 +7,16 @@ use app\base\Model;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Formula */
+/* @var $modelBatch app\models\Batch */
 
-$this->title = $model->title . '(' . $model->id_mark . ')';
-$this->params['breadcrumbs'][] = ['label' => 'Формулы', 'url' => ['index']];
+$this->title = 'Формула: ' . $model->title . '(' . $model->id_mark . ')';
+if($modelBatch !== null) {
+    $this->params['breadcrumbs'][] = ['label' => 'Партии', 'url' => ['/batch/']];
+    $this->params['breadcrumbs'][] = ['label' => $modelBatch->batch, 'url' => ['/batch/view', 'id' => $modelBatch->batch]];
+    $this->params['breadcrumbs'][] = ['label' => 'Выбор формулы', 'url' => ['/formula/', 'batch' => $modelBatch->batch]];
+} else {
+    $this->params['breadcrumbs'][] = ['label' => 'Формулы', 'url' => ['index']];
+}
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="formula-view">
@@ -17,11 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Изменить', ['update', 'id' => $model->id_formula], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Изменить', ['update', 'id' => $model->id_formula, 'batch' => $modelBatch->batch], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Удалить', ['delete', 'id' => $model->id_formula], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => '\'Вы уверены, что хотите удалить эту формулу?',
+                'confirm' => 'Вы уверены, что хотите удалить эту формулу?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -39,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <?= $this->render('_formula', [
-        'dataProvider' => $dataProvider,
+        'dataProvider' => $model->searchElements(),
     ]) ?>
 
 </div>

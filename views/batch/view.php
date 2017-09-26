@@ -5,11 +5,14 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Batch */
+/* @var $modelFormula app\models\Formula */
 
 $this->title = $model->batch;
 $this->params['breadcrumbs'][] = ['label' => 'Партии', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
+
 <div class="batch-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -47,18 +50,33 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    <?php if($model->id_formula == null): ?>
+    <?php if($model->id_formula == null){ ?>
         <h3>Формула не задана!</h3>
         <p>
-            <?= Html::a('Выбрать формулу', ['choose-formula', 'id' => $model->batch], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Выбрать формулу', ['/formula', 'batch' => $model->batch], ['class' => 'btn btn-primary']) ?>
         </p>
-    <?php else: ?>
+    <?php } elseif($modelFormula == null) { ?>
+        <div class="alert alert-danger">Выбранная формула не существует или была удалена!</div>
         <p>
-            <?= Html::a('Выбрать другую формулу', ['choose-formula', 'id' => $model->batch], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a('Редактировать формулу', ['/formula/update', 'id' => $model->id_formula, 'batch' => $model->batch], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Выбрать формулу', ['/formula', 'batch' => $model->batch], ['class' => 'btn btn-primary']) ?>
+        </p>
+    <?php  } else { ?>
+        <h3><?= 'Формула: ' . $modelFormula->title . '(' . $modelFormula->id_mark . ')' ?></h3>
+        <p>
+            <?= Html::a('Выбрать другую формулу', ['/formula', 'batch' => $model->batch], ['class' => 'btn btn-info']) ?>
+            <?php if($modelFormula->getStatus() > \app\models\Formula::STATUS_ONE_USE): ?>
+                <?= Html::a('Редактировать формулу', ['/formula/update', 'id' => $model->id_formula, 'batch' => $model->batch, 'asNew' => true],
+                    [   'class' => 'btn btn-warning',
+                        'data' => [
+                            'confirm' => 'Данную формулу нельзя редактировать, так как она используется в других партиях. Создать новую формулу на основе выбранной, с возможностью редактирования?'
+                        ]
+                    ]) ?>
+            <?php else: ?>
+                <?= Html::a('Редактировать формулу', ['/formula/update', 'id' => $model->id_formula, 'batch' => $model->batch],['class' => 'btn btn-primary']); ?>
+            <?php endif; ?>
         </p>
         <?= $this->render('/formula/_formula', [
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $modelFormula->searchElements(),
         ]) ?>
-    <?php endif; ?>
+    <?php } ?>
 </div>

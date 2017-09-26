@@ -15,7 +15,7 @@ use Yii;
  * @property string $update_date
  * @property string $create_date
  */
-class FormulaElements extends \yii\db\ActiveRecord
+class FormulaElements extends \app\base\BaseModel
 {
     /**
      * @inheritdoc
@@ -60,17 +60,5 @@ class FormulaElements extends \yii\db\ActiveRecord
             'update_date' => 'Дата изменения',
             'create_date' => 'Дата создания',
         ];
-    }
-
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-            $this->update_date = date('Y-m-d h:i:s');
-            if($this->isNewRecord){
-                $this->create_date = date('Y-m-d h:i:s');
-            }
-            return true;
-        }
-        return false;
     }
 }

@@ -41,7 +41,7 @@ class BatchSearch extends Batch
      */
     public function search($params)
     {
-        $query = Batch::find();
+        $query = Batch::find()->where(['active' => 1]);
 
         // add conditions that should always apply here
 

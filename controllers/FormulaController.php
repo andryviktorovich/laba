@@ -38,12 +38,14 @@ class FormulaController extends Controller
      * Lists all Formula models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($batch = null)
     {
+        $modelBatch = Batch::findOne($batch);
         $searchModel = new FormulaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'batch' => $modelBatch,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -54,14 +56,14 @@ class FormulaController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id, $batch = null)
     {
         $model = $this->findModel($id);
+        $modelBatch = Batch::findOne($batch);
 //        $model->getStatus();
-        $dataProvider = $model->searchElements();
         return $this->render('view', [
             'model' => $model,
-            'dataProvider' => $dataProvider,
+            'modelBatch' => $modelBatch,
         ]);
     }
 
@@ -75,9 +77,10 @@ class FormulaController extends Controller
         $modelFormula = new Formula();
         $modelFormulaElements = [new FormulaElements];
 
-        if (($modelBatch = Batch::findOne($batch)) !== null) {
-            $modelFormula->id_mark = $modelBatch->id_mark;
-        }
+//        if (($modelBatch = Batch::findOne($batch)) !== null) {
+//            $modelFormula->id_mark = $modelBatch->id_mark;
+//        }
+        $modelBatch = Batch::findOne($batch);
 
         if ($modelFormula->load(Yii::$app->request->post())) {
 
@@ -105,10 +108,12 @@ class FormulaController extends Controller
                     if ($flag) {
                         $transaction->commit();
                         if($modelBatch !== null) {
-                            return $this->redirect(['/batch/choose-formula', 'id' => $modelBatch->batch]);
-                        } else {
-                            return $this->redirect(['view', 'id' => $modelFormula->id_formula]);
+                            $modelBatch->id_formula = $modelFormula->id_formula;
+                            $modelBatch->save();
+                            return $this->redirect(['/batch/view', 'id' => $modelBatch->batch]);
                         }
+                        return $this->redirect(['view', 'id' => $modelFormula->id_formula, 'batch' => $modelBatch->batch]);
+//                        }
 
 //                        return $this->redirect(['index']);
                     }
@@ -132,12 +137,20 @@ class FormulaController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id, $batch = null)
+    public function actionUpdate($id, $batch = null, $asNew = false)
     {
         $modelFormula = $this->findModel($id);
         $modelFormulaElements = $modelFormula->elements;
 
         $modelBatch = Batch::findOne($batch);
+
+        if($modelFormula->getStatus() > Formula::STATUS_ONE_USE && !$asNew) {
+            return $this->render('error', [
+                'modelFormula' => $modelFormula,
+                'title' => 'Изменение формулы: ' . $modelFormula->title . '(' . $modelFormula->id_mark .  ')',
+                'message' => 'Не возможно изменить данную формулу! Она уже используется в нескольких партиях.',
+            ]);
+        }
 
         if ($modelFormula->load(Yii::$app->request->post())) {
 
@@ -167,7 +180,7 @@ class FormulaController extends Controller
                     }
                     if ($flag) {
                         $transaction->commit();
-                        if($modelBatch !== null) {
+                        if($modelBatch !== null && $modelFormula->id_formula == $modelBatch->id_formula) {
                             return $this->redirect(['/batch/view', 'id' => $modelBatch->batch]);
                         } else {
                             return $this->redirect(['view', 'id' => $modelFormula->id_formula]);
@@ -182,7 +195,8 @@ class FormulaController extends Controller
         return $this->render('update', [
             'modelBatch' => $modelBatch,
             'modelFormula' => $modelFormula,
-            'modelFormulaElements' => (empty($modelFormulaElements)) ? [new FormulaElements] : $modelFormulaElements
+            'modelFormulaElements' => (empty($modelFormulaElements)) ? [new FormulaElements] : $modelFormulaElements,
+            'asNew' => $asNew,
         ]);
     }
 
@@ -194,11 +208,18 @@ class FormulaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        if (FormulaElements::deleteAll(['id_formula' => $id])) {
-            Yii::$app->session->setFlash('success', 'Record formula  <strong>"' . $id . '"</strong> deleted successfully.');
+        $model = $this->findModel($id);
+
+        if($model->getStatus() > Formula::STATUS_ONE_USE) {
+            return $this->render('error', [
+                'modelFormula' => $model,
+                'title' => 'Удаление формулы: ' . $model->title . '(' . $model->id_mark .  ')',
+                'message' => 'Не возможно удалить данную формулу! Она уже используется в нескольких партиях.',
+            ]);
+        } else {
+            $model->delete();
+            return $this->redirect(['index']);
         }
-        return $this->redirect(['index']);
     }
 
     /**

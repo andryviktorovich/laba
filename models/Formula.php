@@ -10,15 +10,19 @@ use yii\data\SqlDataProvider;
  * @property integer $id_formula
  * @property string $id_mark
  * @property string $title
+ * @property string $active
  * @property string $update_date
  * @property string $create_date
  */
-class Formula extends \yii\db\ActiveRecord
+class Formula extends \app\base\BaseModel
 {
     CONST STATUS_UNKNOWN = -1;
     CONST STATUS_NOT_USED = 0;
     CONST STATUS_ONE_USE = 1;
     CONST STATUS_MORE_ONE_USED = 2;
+
+    CONST ACTIVE = 1;
+    CONST NO_ACTIVE = 0;
 
     public $status;
     /**
@@ -45,6 +49,7 @@ class Formula extends \yii\db\ActiveRecord
             [['update_date', 'create_date'], 'safe'],
             [['id_mark'], 'string', 'max' => 100],
             [['title'], 'string', 'max' => 255],
+            ['active', 'default', 'value' => 1],
         ];
     }
 
@@ -62,16 +67,10 @@ class Formula extends \yii\db\ActiveRecord
         ];
     }
 
-    public function beforeSave($insert)
+    public function delete()
     {
-        if (parent::beforeSave($insert)) {
-            $this->update_date = date('Y-m-d H:i:s');
-            if($this->isNewRecord){
-//                $this->create_date = date('Y-m-d H:i:s');
-            }
-            return true;
-        }
-        return false;
+        $this->active = self::NO_ACTIVE;
+        return $this->save();
     }
 
     public function getElements()
@@ -97,9 +96,9 @@ class Formula extends \yii\db\ActiveRecord
     }
 
     public function searchElements(){
-        $sql = "SELECT f.*, m.title AS material, ROUND(IFNULL(f.percent,0)/100*IFNULL(f.cost,0), 3) AS costM
-                FROM formula_elements f, materials m
-                WHERE m.id = f.id_material AND f.id_formula = " . (is_null($this->id_formula) ? 'NULL' : $this->id_formula);
+        $sql = "SELECT fe.*, m.title AS material, ROUND(IFNULL(fe.percent,0)/100*IFNULL(fe.cost,0), 3) AS costM
+                FROM formula f, formula_elements fe, materials m
+                WHERE f.active = 1 AND f.id_formula = fe.id_formula AND m.id = fe.id_material AND f.id_formula = " . (is_null($this->id_formula) ? 'NULL' : $this->id_formula);
 
         $dataProvider = new SqlDataProvider([
             'sql' => $sql,
@@ -110,14 +109,26 @@ class Formula extends \yii\db\ActiveRecord
 
     public function getStatus(){
         if(empty($this->id_formula)){
-            return self::STATUS_UNKNOWN;
+            $this->status = self::STATUS_UNKNOWN;
         }
         $sql = "SELECT COUNT(b.batch) AS count
                 FROM formula f, batches b
-                WHERE f.id_formula = b.id_formula AND f.id_formula = $this->id_formula";
+                WHERE b.active = 1 AND f.id_formula = b.id_formula AND f.id_formula = $this->id_formula";
         $count = Yii::$app->db->createCommand($sql)->queryScalar();
-        if($count > 1 ) return self::STATUS_MORE_ONE_USED;
-        elseif($count == 1) return self::STATUS_ONE_USE;
-        else return self::STATUS_NOT_USED;
+        if($count > 1 ) $this->status = self::STATUS_MORE_ONE_USED;
+        elseif($count == 1) $this->status = self::STATUS_ONE_USE;
+        else $this->status = self::STATUS_NOT_USED;
+
+        return $this->status;
+    }
+
+    public static function findOne($condition)
+    {
+        $model = parent::findOne($condition);
+        if($model->active) {
+            return $model;
+        } else {
+            return null;
+        }
     }
 }

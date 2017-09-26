@@ -8,10 +8,12 @@ use wbraganca\dynamicform\DynamicFormWidget;
 /* @var $this yii\web\View */
 /* @var $model app\models\Formula */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $action array */
 $totalPercent = 0;
 $totalCost = 0;
 
 $js = '
+//пересчет цены
 function calculation(){
         var totalPercent = 0;
         var totalCost = 0;
@@ -67,7 +69,8 @@ $this->registerJs($js);
 
 <div class="formula-form">
 
-    <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
+    <?php $form = ActiveForm::begin(['id' => 'dynamic-form',
+    'action' => $action]); ?>
     <div class="row">
         <div class="col-sm-6">
             <?= $form->field($modelFormula, 'id_mark')->dropDownList(Marks::getListMarks(),['prompt' => 'Выберите марку']) ?>
@@ -106,6 +109,7 @@ $this->registerJs($js);
             <table class="table table-striped table-bordered container-items">
                 <tr><th>Сырье</th><th>Процент (%)</th><th>Цена за 1 кг сырья</th><th>Цена за 1 кг марки</th><th></th></tr>
                 <?php foreach ($modelFormulaElements as $index => $item): ?>
+
                     <tr class="item panel panel-default">
                         <?php
                         $totalPercent += (empty($item->percent)?0:$item->percent);
@@ -125,10 +129,7 @@ $this->registerJs($js);
                         <td>
                             <button type="button" class="remove-item btn btn-danger btn-xs"><i class="fa fa-minus"></i></button>
                         </td>
-
                     </tr>
-
-
 
                 <?php endforeach; ?>
                 <tr class="formula-total">

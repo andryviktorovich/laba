@@ -55,11 +55,9 @@ class BatchController extends Controller
     {
         $model = $this->findModel($id);
         $modelFormula = Formula::findOne($model->id_formula);
-//        $modelFormula->getStatus();
-        $dataProvider = $modelFormula->searchElements();
         return $this->render('view', [
-            'model' => $this->findModel($id),
-            'dataProvider' => $dataProvider
+            'model' => $model,
+            'modelFormula' => $modelFormula,
         ]);
     }
 
@@ -74,11 +72,10 @@ class BatchController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->batch]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
         }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -90,13 +87,16 @@ class BatchController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->batch]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->oldAttributes->id_mark != $model->id_mark)
+                $model->id_formula = null;
+            if($model->save()) {
+                return $this->redirect(['view', 'id' => $model->batch]);
+            }
         }
+        return $this->render('update', [
+                'model' => $model,
+        ]);
     }
 
     public function actionChooseFormula($id){
@@ -104,17 +104,17 @@ class BatchController extends Controller
         $model = $this->findModel($id);
 //        if (Yii::$app->request->isPost) {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            var_dump($model->load(Yii::$app->request->post()));
-//            print_r($model);
-//            print_r(Yii::$app->request->post());exit();
             return $this->redirect(['view', 'id' => $model->batch]);
         } else {
-            $dataProvider = (new FormulaSearch)->searchByBatch($id);
-            return $this->render('choose', [
-                //                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-                'batch' => $model
-            ]);
+//            $searchModel = new FormulaSearch();
+//            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+////            $dataProvider = (new FormulaSearch)->searchByBatch($id);
+//            return $this->render('choose', [
+//                'searchModel' => $searchModel,
+//                'dataProvider' => $dataProvider,
+//                'batch' => $model
+//            ]);
+            return $this->redirect(['view', 'id' => $model->batch]);
         }
     }
 
@@ -127,7 +127,6 @@ class BatchController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 

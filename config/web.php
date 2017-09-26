@@ -66,6 +66,18 @@ $config = [
             // message source
             // 'downloadAction' => 'gridview/export/download',
             // 'i18n' => []
+        ],
+        [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'basePath' => [
+                'Cancel' => 'Отмена',
+                'Confirmation' => 'Подтверждение',
+                'Information' => 'Информация',
+                'Ok' => 'Да',
+                ],
+
+//            'basePath' => '@kvdialog/messages',
+//            'forceTranslation' => true
         ]
     ],
     'params' => $params,
