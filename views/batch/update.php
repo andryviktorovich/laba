@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Batch */
+/* @var $modelsDetail app\models\BatchDetail */
 
 $this->title = 'Изменения партии: ' . $model->batch;
 $this->params['breadcrumbs'][] = ['label' => 'Партии', 'url' => ['index']];
@@ -16,6 +17,8 @@ $this->params['breadcrumbs'][] = 'Изменение';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'modelsDetail' => $modelsDetail,
+        'modelsDetailElement' => $modelsDetailElement
     ]) ?>
 
 </div>

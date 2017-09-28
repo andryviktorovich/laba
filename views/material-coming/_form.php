@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\models\Material;
+use app\models\material\Material;
 use app\models\Provider;
 use kartik\datetime\DateTimePicker;
 /* @var $this yii\web\View */

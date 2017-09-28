@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\models\Material;
+use app\models\material\Material;
 /* @var $this yii\web\View */
 /* @var $model app\models\Material */
 /* @var $form yii\widgets\ActiveForm */

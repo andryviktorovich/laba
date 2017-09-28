@@ -2,11 +2,16 @@
 
 namespace app\controllers;
 
-use app\models\Formula;
+
+
 use Yii;
+use app\base\Model;
 use app\models\Batch;
 use app\models\BatchSearch;
-use app\models\FormulaSearch;
+use app\models\BatchDetail;
+use app\models\BatchDetailElement;
+use app\models\formula\FormulaSearch;
+use app\models\formula\Formula;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,12 +74,79 @@ class BatchController extends Controller
     public function actionCreate()
     {
         $model = new Batch();
+        $modelsDetail = [new BatchDetail];
+        $modelsDetailElement = [];
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->batch]);
+        if ($model->load(Yii::$app->request->post())) {
+            $modelsDetail = Model::createMultiple(BatchDetail::classname());
+            Model::loadMultiple($modelsDetail, Yii::$app->request->post());
+
+            // validate person and houses models
+            $valid = $model->validate();
+            $valid = Model::validateMultiple($modelsDetail) && $valid;
+
+            if (isset($_POST['BatchDetailElement'])) {
+                foreach ($_POST['BatchDetailElement'] as $indexDetail => $details) {
+                    foreach ($details as $indexElem => $elem) {
+                        $data['BatchDetailElement'] = $elem;
+                        $modelElem = new BatchDetailElement;
+                        $modelElem->load($data);
+                        $modelsDetailElement[$indexDetail][$indexElem] = $modelElem;
+//                        print_r($modelsDetailElement);
+                        $valid = $modelElem->validate() && $valid;
+                    }
+                }
+            }
+
+            if ($valid) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+                        foreach ($modelsDetail as $indexDetail => $detail) {
+
+                            if ($flag === false) {
+                                break;
+                            }
+
+                            $detail->batch = $model->batch;
+
+                            if (!($flag = $detail->save(false))) {
+                                break;
+                            }
+
+                            if (isset($modelsDetailElement[$indexDetail]) && is_array($modelsDetailElement[$indexDetail])) {
+                                foreach ($modelsDetailElement[$indexDetail] as $indexElem => $elem) {
+                                    $elem->id_detail = $detail->id;
+                                    if (!($flag = $elem->save(false))) {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ($flag) {
+                        $transaction->commit();
+                        //return $this->redirect(['view', 'id' => $modelPerson->id]);
+                        return $this->redirect(['index',]);
+                    } else {
+                        $transaction->rollBack();
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
         }
+
+
+
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->batch]);
+//        }
         return $this->render('create', [
             'model' => $model,
+            'modelsDetail' => (empty($modelsDetail)) ? [new BatchDetail] : $modelsDetail,
+            'modelsDetailElement' => (empty($modelsDetailElement)) ? [[new BatchDetailElement]] : $modelsDetailElement,
         ]);
     }
 
@@ -87,15 +159,33 @@ class BatchController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelsDetail = $model->details;
+        $modelsDetailElement = [];
+
+        if (!empty($modelsDetail)) {
+            foreach ($modelsDetail as $indexDetail => $detail) {
+                $elements = $detail->elements;
+//                var_dump($elements);
+                $modelsDetailElement[$indexDetail] = (empty($elements)) ? [new BatchDetailElement] : $elements;
+                //$oldRooms = ArrayHelper::merge(ArrayHelper::index($rooms, 'id'), $oldRooms);
+            }
+        }
+//exit();
         if ($model->load(Yii::$app->request->post())) {
-            if($model->oldAttributes->id_mark != $model->id_mark)
+//            print_r($model->oldAttributes);
+//            print_r($model->oldAttributes->id_mark);
+//            echo 111;
+//            print_r($model->id_mark);
+            if($model->oldAttributes['id_mark'] !== $model->id_mark)
                 $model->id_formula = null;
             if($model->save()) {
                 return $this->redirect(['view', 'id' => $model->batch]);
             }
         }
         return $this->render('update', [
-                'model' => $model,
+            'model' => $model,
+            'modelsDetail' => (empty($modelsDetail)) ? [new BatchDetail] : $modelsDetail,
+            'modelsDetailElement' => (empty($modelsDetailElement)) ? [[new BatchDetailElement]] : $modelsDetailElement,
         ]);
     }
 
@@ -106,14 +196,6 @@ class BatchController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->batch]);
         } else {
-//            $searchModel = new FormulaSearch();
-//            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-////            $dataProvider = (new FormulaSearch)->searchByBatch($id);
-//            return $this->render('choose', [
-//                'searchModel' => $searchModel,
-//                'dataProvider' => $dataProvider,
-//                'batch' => $model
-//            ]);
             return $this->redirect(['view', 'id' => $model->batch]);
         }
     }
@@ -128,6 +210,15 @@ class BatchController extends Controller
     {
         $this->findModel($id)->delete();
         return $this->redirect(['index']);
+    }
+
+    public function actionDeleteFormula($id)
+    {
+        $model = $this->findModel($id);
+        $model->id_formula = null;
+        $model->save();
+        return $this->redirect(['view', 'id' => $model->batch]);
+//        return $this->redirect(['index']);
     }
 
     /**

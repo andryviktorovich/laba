@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\MaterialComing;
-use app\models\MaterialComingSearch;
+use app\models\material\MaterialComing;
+use app\models\material\MaterialComingSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

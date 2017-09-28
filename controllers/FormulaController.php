@@ -5,9 +5,9 @@ namespace app\controllers;
 
 use Yii;
 use app\base\Model;
-use app\models\Formula;
-use app\models\FormulaSearch;
-use app\models\FormulaElements;
+use app\models\formula\Formula;
+use app\models\formula\FormulaSearch;
+use app\models\formula\FormulaElements;
 use app\models\Batch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;

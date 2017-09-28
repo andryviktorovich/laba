@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use app\models\MaterialInStock;
+use app\models\material\MaterialInStock;
 use app\models\Provider;
 use kartik\datetime\DateTimePicker;
 

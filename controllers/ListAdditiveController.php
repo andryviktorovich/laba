@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\ListAdditive;
-use app\models\ListAdditiveSearch;
+use app\models\listmodels\ListAdditive;
+use app\models\listmodels\ListAdditiveSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\ListColor;
-use app\models\ListColorSearch;
+use app\models\listmodels\ListColor;
+use app\models\listmodels\ListColorSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

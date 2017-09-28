@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\ListPolymer;
-use app\models\ListPolymerSearch;
+use app\models\listmodels\ListPolymer;
+use app\models\listmodels\ListPolymerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

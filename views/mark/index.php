@@ -3,9 +3,9 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use app\models\ListColor;
-use app\models\ListAdditive;
-use app\models\ListPolymer;
+use app\models\listmodels\ListColor;
+use app\models\listmodels\ListAdditive;
+use app\models\listmodels\ListPolymer;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\MarkSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */

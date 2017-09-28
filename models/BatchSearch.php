@@ -18,7 +18,8 @@ class BatchSearch extends Batch
     public function rules()
     {
         return [
-            [['batch', 'id_mark', 'release_date', 'update_date', 'create_date'], 'safe'],
+            [['batch', 'id_mark', 'date_start', 'release_date', 'update_date', 'create_date'], 'safe'],
+            [['id_machine'], 'integer'],
             [['cost', 'amount'], 'number'],
         ];
     }

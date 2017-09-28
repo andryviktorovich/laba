@@ -4,6 +4,8 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use app\models\listmodels\ListColor;
+use app\models\listmodels\ListAdditive;
 /**
  * This is the model class for table "marks".
  *

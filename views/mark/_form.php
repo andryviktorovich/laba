@@ -2,10 +2,10 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\models\ListColor;
-use app\models\ListAdditive;
-use app\models\ListPolymer;
-use app\models\ListConditionsMFI;
+use app\models\listmodels\ListColor;
+use app\models\listmodels\ListAdditive;
+use app\models\listmodels\ListPolymer;
+use app\models\listmodels\ListConditionsMFI;
 /* @var $this yii\web\View */
 /* @var $model app\models\Marks */
 /* @var $form yii\widgets\ActiveForm */

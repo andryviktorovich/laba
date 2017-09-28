@@ -2,10 +2,10 @@
 
 namespace app\controllers;
 
-use app\models\MaterialInStock;
 use Yii;
-use app\models\MaterialConsumption;
-use app\models\MaterialConsumptionSearch;
+use app\models\material\MaterialConsumption;
+use app\models\material\MaterialConsumptionSearch;
+use app\models\material\MaterialInStock;
 use app\base\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;

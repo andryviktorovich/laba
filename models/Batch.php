@@ -9,11 +9,13 @@ use yii\helpers\ArrayHelper;
  *
  * @property string $batch
  * @property string $id_mark
- * @property string $cost
- * @property string $amount
- * @property string $id_formula
+ * @property float $cost
+ * @property float $amount
+ * @property integer $id_formula
+ * @property string $date_start
  * @property string $release_date
- * @property string $active
+ * @property boolean $active
+ * @property integer $count_bag
  * @property string $update_date
  * @property string $create_date
  */
@@ -30,19 +32,25 @@ class Batch extends \app\base\BaseModel
         return 'batches';
     }
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->count_bag = 1;
+    }
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['batch', 'id_mark', 'amount', 'release_date'], 'required'],
+            [['batch', 'id_mark', 'amount'], 'required'],
             [['cost', 'amount'], 'number'],
-            [['id_formula'], 'integer'],
-            [['release_date', 'update_date', 'create_date'], 'safe'],
+            [['id_formula', 'id_machine', 'count_bag'], 'integer'],
+            [['release_date', 'date_start', 'update_date', 'create_date'], 'safe'],
             [['batch'], 'string', 'max' => 50],
             [['id_mark'], 'string', 'max' => 100],
             ['active', 'default', 'value' => 1],
+            ['count_bag', 'default', 'value' => 1],
         ];
     }
 
@@ -57,7 +65,11 @@ class Batch extends \app\base\BaseModel
             'cost' => 'Цена за кг.',
             'amount' => 'Количество, кг.',
             'id_formula' => 'Формула',
+            'id_machine' => 'Машина',
+            'date_start' => 'Дата начала',
             'release_date' => 'Дата выпуска',
+            'active' => 'Активен',
+            'count_bag' => 'Количесво мешков',
             'update_date' => 'Дата изменения',
             'create_date' => 'Дата создания',
         ];
@@ -72,6 +84,15 @@ class Batch extends \app\base\BaseModel
     public function getMark()
     {
         return $this->hasOne(Marks::className(), ['id_mark' => 'id_mark']);
+    }
+
+    public function getMachine()
+    {
+        return $this->hasOne(Machine::className(), ['id' => 'id_machine']);
+    }
+
+    public function getDetails(){
+        return $this->hasMany(BatchDetail::className(), ['batch' => 'batch']);
     }
 
     public function delete()

@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\ListConditionsMFI;
-use app\models\ListConditionsMFISearch;
+use app\models\listmodels\ListConditionsMFI;
+use app\models\listmodels\ListConditionsMFISearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

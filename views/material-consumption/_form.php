@@ -4,7 +4,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\Batch;
-use app\models\MaterialInStock;
+use app\models\material\MaterialInStock;
 use kartik\datetime\DateTimePicker;
 use wbraganca\dynamicform\DynamicFormWidget;
 /* @var $this yii\web\View */

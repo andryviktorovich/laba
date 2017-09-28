@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\models\formula\Formula;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Batch */
@@ -36,6 +37,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'amount',
             'cost',
             [
+                'attribute' => 'id_machine',
+                'value' => $model->machine->title,
+            ],
+            [
+                'attribute' => 'date_start',
+                'format' =>  ['date', 'dd.MM.Y'],
+            ],
+            [
                 'attribute' => 'release_date',
                 'format' =>  ['date', 'dd.MM.Y'],
             ],
@@ -64,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h3><?= 'Формула: ' . $modelFormula->title . '(' . $modelFormula->id_mark . ')' ?></h3>
         <p>
             <?= Html::a('Выбрать другую формулу', ['/formula', 'batch' => $model->batch], ['class' => 'btn btn-info']) ?>
-            <?php if($modelFormula->getStatus() > \app\models\Formula::STATUS_ONE_USE): ?>
+            <?php if($modelFormula->getStatus() > Formula::STATUS_ONE_USE): ?>
                 <?= Html::a('Редактировать формулу', ['/formula/update', 'id' => $model->id_formula, 'batch' => $model->batch, 'asNew' => true],
                     [   'class' => 'btn btn-warning',
                         'data' => [
@@ -74,6 +83,13 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php else: ?>
                 <?= Html::a('Редактировать формулу', ['/formula/update', 'id' => $model->id_formula, 'batch' => $model->batch],['class' => 'btn btn-primary']); ?>
             <?php endif; ?>
+            <?= Html::a('Убрать формулу', ['delete-formula', 'id' => $model->batch], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Вы уверены, что хотите отключить фомулу от этой партии?',
+                    'method' => 'post',
+                ],
+            ]) ?>
         </p>
         <?= $this->render('/formula/_formula', [
             'dataProvider' => $modelFormula->searchElements(),
