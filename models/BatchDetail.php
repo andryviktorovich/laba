@@ -52,8 +52,8 @@ class BatchDetail extends \app\base\BaseModel
         return [
             'id' => Yii::t('app', 'ID'),
             'batch' => Yii::t('app', 'Партия'),
-            'number_feeder' => Yii::t('app', 'Номер дозатора'),
-            'size_bag' => Yii::t('app', 'Размер мешка, кг'),
+            'number_feeder' => Yii::t('app', '№ дозатора'),
+            'size_bag' => Yii::t('app', 'Тара, кг'),
             'update_date' => Yii::t('app', 'Дата изменения'),
             'create_date' => Yii::t('app', 'Дата создания'),
         ];

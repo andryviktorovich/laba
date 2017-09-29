@@ -27,23 +27,23 @@ use app\models\material\Material;
 ]); ?>
     <table class="table table-bordered">
         <thead>
-        <tr>
-            <th style="width: 250px;">Наименование</th>
-            <th style="width: 100px;">Кол-во %</th>
-            <th>%</th>
-            <?php for ($i = 0; $i < $model->count_bag; $i++): ?>
-                <th>Замес <?= $i+1?></th>
-            <?php endfor; ?>
-            <th class="text-center" style="width: 50px;">
-                <button type="button" class="add-elem btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span></button>
-            </th>
-        </tr>
+            <tr>
+                <th >Наименование</th>
+                <th class="e-th-percent">Кол-во %</th>
+<!--                <th>%</th>-->
+<!--                <th>Коэф</th>-->
+<!--                --><?php //for ($i = 0; $i < $model->count_bag; $i++): ?>
+<!--                    <th>Замес --><?//= $i+1?><!--</th>-->
+<!--                --><?php //endfor; ?>
+                <th class="text-center e-th-action">
+                    <button type="button" class="add-elem btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span></button>
+                </th>
+            </tr>
         </thead>
         <tbody class="container-elements">
         <?php foreach ($modelsElement as $indexElem => $modelElem): ?>
             <tr class="elem-item">
-                <div class="help-block"><?= $form->errorSummary($modelElem);?></div>
-                <td class="vcenter" style="width: 250px;">
+                <td class="vcenter" >
                     <?php
                     // necessary for update action.
                     if (! $modelElem->isNewRecord) {
@@ -52,18 +52,22 @@ use app\models\material\Material;
                     ?>
                     <?= $form->field($modelElem, "[{$indexDetail}][{$indexElem}]id_material")->dropDownList(Material::getListMaterials(),['prompt' => 'Выберите сырье...'])->label(false) ?>
                 </td>
-                <td class="vcenter" style="width: 100px;">
-                    <?= $form->field($modelElem, "[{$indexDetail}][{$indexElem}]percent")->label(false) ?>
+                <td class="vcenter e-td-percent">
+                    <?= $form->field($modelElem, "[{$indexDetail}][{$indexElem}]percent")->textInput(['class' => 'e-percent form-control'])->label(false) ?>
                 </td>
-                <td></td>
-                <?php for ($i = 0; $i < $model->count_bag; $i++): ?>
-                    <td></td>
-                <?php endfor; ?>
-                <td class="text-center vcenter" style="width: 50px;">
+<!--                --><?php //if($indexElem == 0): ?>
+<!--                    <td class="e-sum-percent" rowspan="--><?//= count($modelsElement)?><!--"></td>-->
+<!--                --><?php //endif; ?>
+<!--                <td></td>-->
+<!--                --><?php //for ($i = 0; $i < $model->count_bag; $i++): ?>
+<!--                    <td></td>-->
+<!--                --><?php //endfor; ?>
+                <td class="text-center vcenter e-td-action">
                     <button type="button" class="remove-elem btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus"></span></button>
                 </td>
             </tr>
         <?php endforeach; ?>
+
         </tbody>
     </table>
 <?php DynamicFormWidget::end(); ?>

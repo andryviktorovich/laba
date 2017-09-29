@@ -14,7 +14,7 @@ use Yii;
  * @property string $update_date
  * @property string $create_date
  */
-class BatchDetailElement extends \yii\db\ActiveRecord
+class BatchDetailElement extends \app\base\BaseModel
 {
     /**
      * @inheritdoc

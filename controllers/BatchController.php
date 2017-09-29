@@ -10,11 +10,11 @@ use app\models\Batch;
 use app\models\BatchSearch;
 use app\models\BatchDetail;
 use app\models\BatchDetailElement;
-use app\models\formula\FormulaSearch;
 use app\models\formula\Formula;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * BatchController implements the CRUD actions for Batch model.
@@ -161,27 +161,110 @@ class BatchController extends Controller
         $model = $this->findModel($id);
         $modelsDetail = $model->details;
         $modelsDetailElement = [];
+        $oldElem = [];
 
         if (!empty($modelsDetail)) {
             foreach ($modelsDetail as $indexDetail => $detail) {
                 $elements = $detail->elements;
 //                var_dump($elements);
                 $modelsDetailElement[$indexDetail] = (empty($elements)) ? [new BatchDetailElement] : $elements;
-                //$oldRooms = ArrayHelper::merge(ArrayHelper::index($rooms, 'id'), $oldRooms);
+                $oldElem = ArrayHelper::merge(ArrayHelper::index($elements, 'id'), $oldElem);
+            }
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+            // reset
+            $modelsDetailElement = [];
+
+            $oldDetailIDs = ArrayHelper::map($modelsDetail, 'id', 'id');
+            $modelsDetail = Model::createMultiple(BatchDetail::classname(), $modelsDetail);
+            Model::loadMultiple($modelsDetail, Yii::$app->request->post());
+            $deletedDetailIDs = array_diff($oldDetailIDs, array_filter(ArrayHelper::map($modelsDetail, 'id', 'id')));
+
+            // validate person and houses models
+            $valid = $model->validate();
+            $valid = Model::validateMultiple($modelsDetail) && $valid;
+
+            $elemIDs = [];
+            if (isset($_POST['BatchDetailElement'])) {
+                foreach ($_POST['BatchDetailElement'] as $indexDetail => $deteils) {
+                    $elemIDs = ArrayHelper::merge($elemIDs, array_filter(ArrayHelper::getColumn($deteils, 'id')));
+                    foreach ($deteils as $indexElem => $elem) {
+                        $data['BatchDetailElement'] = $elem;
+                        $modelElem = (isset($elem['id']) && isset($oldElem[$elem['id']])) ? $oldElem[$elem['id']] : new BatchDetailElement();
+                        $modelElem->load($data);
+                        $modelsDetailElement[$indexDetail][$indexElem] = $modelElem;
+                        $valid = $modelElem->validate() && $valid;
+                    }
+                }
+            }
+
+            $oldElemIDs = ArrayHelper::getColumn($oldElem, 'id');
+            $deletedElemIDs = array_diff($oldElemIDs, $elemIDs);
+
+            if ($valid) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    if($model->oldAttributes['id_mark'] !== $model->id_mark){
+                        $model->id_formula = null;
+                    }
+                    if ($flag = $model->save(false)) {
+
+                        if (! empty($deletedElemIDs)) {
+                            BatchDetailElement::deleteAll(['id' => $deletedElemIDs]);
+                        }
+
+                        if (! empty($deletedDetailIDs)) {
+                            BatchDetail::deleteAll(['id' => $deletedDetailIDs]);
+                        }
+
+                        foreach ($modelsDetail as $indexDetail => $detail) {
+
+                            if ($flag === false) {
+                                break;
+                            }
+
+                            $detail->batch = $model->batch;
+
+                            if (!($flag = $detail->save(false))) {
+                                break;
+                            }
+
+                            if (isset($modelsDetailElement[$indexDetail]) && is_array($modelsDetailElement[$indexDetail])) {
+                                foreach ($modelsDetailElement[$indexDetail] as $indexElem => $elem) {
+                                    $elem->id_detail = $detail->id;
+                                    if (!($flag = $elem->save(false))) {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->batch]);
+                    } else {
+                        $transaction->rollBack();
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
             }
         }
 //exit();
-        if ($model->load(Yii::$app->request->post())) {
-//            print_r($model->oldAttributes);
-//            print_r($model->oldAttributes->id_mark);
-//            echo 111;
-//            print_r($model->id_mark);
-            if($model->oldAttributes['id_mark'] !== $model->id_mark)
-                $model->id_formula = null;
-            if($model->save()) {
-                return $this->redirect(['view', 'id' => $model->batch]);
-            }
-        }
+//        if ($model->load(Yii::$app->request->post())) {
+////            print_r($model->oldAttributes);
+////            print_r($model->oldAttributes->id_mark);
+////            echo 111;
+////            print_r($model->id_mark);
+//
+//            if($model->save()) {
+//                return $this->redirect(['view', 'id' => $model->batch]);
+//            }
+//        }
+
+//        print_r($modelsDetailElement);exit();
         return $this->render('update', [
             'model' => $model,
             'modelsDetail' => (empty($modelsDetail)) ? [new BatchDetail] : $modelsDetail,

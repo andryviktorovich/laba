@@ -113,7 +113,9 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
-
+/*
+newwwwww
+*/
 .group-batch {
     text-align: center;
 }
@@ -134,4 +136,30 @@ a.desc:after {
 
 .table  tr.success  td {
     background-color: #DFEE66 !important;
+}
+
+
+.batch-form .table {
+     margin-bottom: 0px;
+}
+
+.batch-form .table .vcenter {
+    vertical-align: middle;
+}
+
+.batch-form .e-total, .batch-form .d-total {
+    vertical-align: middle;
+    text-align: center;
+    font-weight: bold;
+}
+
+.batch-form .temporarily{
+    width: 80px;
+}
+
+.batch-form .e-td-percent, .batch-form .e-th-percent, .batch-form .d-total-percent {
+    width: 100px;
+}
+.batch-form .e-td-action, .batch-form .e-th-action, .batch-form .d-total-action {
+    width: 50px;
 }
