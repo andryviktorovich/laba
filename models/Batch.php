@@ -51,6 +51,7 @@ class Batch extends \app\base\BaseModel
             [['id_mark'], 'string', 'max' => 100],
             ['active', 'default', 'value' => 1],
             ['count_bag', 'default', 'value' => 1],
+            [['count_bag'], 'integer', 'max' => 10],
         ];
     }
 
@@ -70,8 +71,8 @@ class Batch extends \app\base\BaseModel
             'release_date' => 'Дата выпуска',
             'active' => 'Активен',
             'count_bag' => 'Количесво мешков',
-            'update_date' => 'Дата изменения',
-            'create_date' => 'Дата создания',
+            'update_date' => 'Дата изменения записи',
+            'create_date' => 'Дата создания записи',
         ];
     }
 

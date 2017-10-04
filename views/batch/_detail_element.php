@@ -30,11 +30,7 @@ use app\models\material\Material;
             <tr>
                 <th >Наименование</th>
                 <th class="e-th-percent">Кол-во %</th>
-<!--                <th>%</th>-->
-<!--                <th>Коэф</th>-->
-<!--                --><?php //for ($i = 0; $i < $model->count_bag; $i++): ?>
-<!--                    <th>Замес --><?//= $i+1?><!--</th>-->
-<!--                --><?php //endfor; ?>
+                <th class="e-th-cost">Цена сырья</th>
                 <th class="text-center e-th-action">
                     <button type="button" class="add-elem btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span></button>
                 </th>
@@ -50,18 +46,21 @@ use app\models\material\Material;
                         echo Html::activeHiddenInput($modelElem, "[{$indexDetail}][{$indexElem}]id");
                     }
                     ?>
-                    <?= $form->field($modelElem, "[{$indexDetail}][{$indexElem}]id_material")->dropDownList(Material::getListMaterials(),['prompt' => 'Выберите сырье...'])->label(false) ?>
+                    <?= $form->field($modelElem, "[{$indexDetail}][{$indexElem}]id_material")
+                                ->dropDownList(Material::getListMaterials(),['class'  => 'e-material form-control', 'prompt' => 'Выберите сырье...'])
+                                ->label(false)
+                    ?>
                 </td>
                 <td class="vcenter e-td-percent">
-                    <?= $form->field($modelElem, "[{$indexDetail}][{$indexElem}]percent")->textInput(['class' => 'e-percent form-control'])->label(false) ?>
+                    <?= $form->field($modelElem, "[{$indexDetail}][{$indexElem}]percent")
+                                ->textInput(['class' => 'e-percent form-control', 'autocomplete' => 'off'])
+                                ->label(false) ?>
                 </td>
-<!--                --><?php //if($indexElem == 0): ?>
-<!--                    <td class="e-sum-percent" rowspan="--><?//= count($modelsElement)?><!--"></td>-->
-<!--                --><?php //endif; ?>
-<!--                <td></td>-->
-<!--                --><?php //for ($i = 0; $i < $model->count_bag; $i++): ?>
-<!--                    <td></td>-->
-<!--                --><?php //endfor; ?>
+                <td class="vcenter e-td-cost">
+                    <?= $form->field($modelElem, "[{$indexDetail}][{$indexElem}]cost")
+                                ->textInput(['class' => 'e-cost form-control'])
+                                ->label(false) ?>
+                </td>
                 <td class="text-center vcenter e-td-action">
                     <button type="button" class="remove-elem btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus"></span></button>
                 </td>

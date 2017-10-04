@@ -11,6 +11,7 @@ use Yii;
  * @property integer $id_detail
  * @property integer $id_material
  * @property float $percent
+ * @property float $cost
  * @property string $update_date
  * @property string $create_date
  */
@@ -33,6 +34,7 @@ class BatchDetailElement extends \app\base\BaseModel
             [['id_material', 'percent'], 'required'],
             [['id_detail', 'id_material'], 'integer'],
             [['percent'],'number', 'max' => 100],
+            [['cost'],'number'],
             [['update_date', 'create_date'], 'safe'],
         ];
     }
@@ -47,6 +49,7 @@ class BatchDetailElement extends \app\base\BaseModel
             'id_detail' => Yii::t('app', 'Наряд'),
             'id_material' => Yii::t('app', 'Сырье'),
             'percent' => Yii::t('app', 'Количество, %'),
+            'cost' => Yii::t('app', 'Цена сырья'),
             'update_date' => Yii::t('app', 'Дата изменения'),
             'create_date' => Yii::t('app', 'Дата создания'),
         ];

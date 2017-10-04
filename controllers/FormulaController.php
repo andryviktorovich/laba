@@ -89,7 +89,7 @@ class FormulaController extends Controller
 
             // validate all models
             $valid = $modelFormula->validate();
-            $valid = Model::validateMultiple($modelFormulaElements) && $valid;
+            $valid = $modelFormula->validateElements($modelFormulaElements) && $valid;//Model::validateMultiple($modelFormulaElements) && $valid;
 
             if ($valid) {
                 $transaction = \Yii::$app->db->beginTransaction();

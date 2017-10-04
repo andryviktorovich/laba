@@ -67,9 +67,10 @@ use kartik\datetime\DateTimePicker;
             <?= $form->field($model, 'count_bag')->textInput(['id' => 'd-count-bag', 'maxlength' => true]) ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'cost')->textInput(['maxlength' => true, 'disabled' => true]) ?>
+            <?= $form->field($model, 'cost')->textInput(['id' => 'd-cost', 'maxlength' => true, ]) ?>
         </div>
     </div><!-- end:row -->
+    <div class="help-block"><?= $form->errorSummary($model);?></div>
 
     <?= $this->render('_detail', [
         'form' => $form,

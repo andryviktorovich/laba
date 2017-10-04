@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6a1490a6c98ae6e081c3efff1d47a402",
+    "content-hash": "2542f4e6c1b34ebe684a076a3d6e446d",
     "packages": [
         {
             "name": "bower-asset/bootbox",
@@ -262,32 +262,32 @@
         },
         {
             "name": "bower-asset/sweetalert",
-            "version": "v2.0.3",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/t4t5/sweetalert.git",
-                "reference": "419bf67d830dce254dfc45bc4575f2288532d620"
+                "reference": "8431befa0d746516958bc7db1952563b9adb7975"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/t4t5/sweetalert/zipball/419bf67d830dce254dfc45bc4575f2288532d620",
-                "reference": "419bf67d830dce254dfc45bc4575f2288532d620",
+                "url": "https://api.github.com/repos/t4t5/sweetalert/zipball/8431befa0d746516958bc7db1952563b9adb7975",
+                "reference": "8431befa0d746516958bc7db1952563b9adb7975",
                 "shasum": ""
             },
             "type": "bower-asset-library"
         },
         {
             "name": "bower-asset/yii2-pjax",
-            "version": "v2.0.6",
+            "version": "v2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/jquery-pjax.git",
-                "reference": "60728da6ade5879e807a49ce59ef9a72039b8978"
+                "reference": "885fc8c2d36c93a801b6af0ee8ad55d79df97cb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/60728da6ade5879e807a49ce59ef9a72039b8978",
-                "reference": "60728da6ade5879e807a49ce59ef9a72039b8978",
+                "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/885fc8c2d36c93a801b6af0ee8ad55d79df97cb1",
+                "reference": "885fc8c2d36c93a801b6af0ee8ad55d79df97cb1",
                 "shasum": ""
             },
             "require": {
@@ -308,7 +308,8 @@
             },
             "license": [
                 "MIT"
-            ]
+            ],
+            "time": "2017-09-27T10:22:38+00:00"
         },
         {
             "name": "cebe/markdown",
@@ -423,12 +424,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fxpio/composer-asset-plugin.git",
-                "reference": "dd559b0f69628277c868dcf3deeb17948e3e9b19"
+                "reference": "aaaf9c040cd309afb43f51b097f388354d6f842e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fxpio/composer-asset-plugin/zipball/dd559b0f69628277c868dcf3deeb17948e3e9b19",
-                "reference": "dd559b0f69628277c868dcf3deeb17948e3e9b19",
+                "url": "https://api.github.com/repos/fxpio/composer-asset-plugin/zipball/aaaf9c040cd309afb43f51b097f388354d6f842e",
+                "reference": "aaaf9c040cd309afb43f51b097f388354d6f842e",
                 "shasum": ""
             },
             "require": {
@@ -474,7 +475,7 @@
                 "npm",
                 "package"
             ],
-            "time": "2017-09-07T09:01:09+00:00"
+            "time": "2017-09-27T16:59:09+00:00"
         },
         {
             "name": "kartik-v/bootstrap-popover-x",
@@ -524,6 +525,97 @@
                 "popover-x"
             ],
             "time": "2017-09-07T13:05:26+00:00"
+        },
+        {
+            "name": "kartik-v/bootstrap-tabs-x",
+            "version": "v1.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/bootstrap-tabs-x.git",
+                "reference": "e85a731d79f030fb7f7742e3e2e0ac828c3233a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-tabs-x/zipball/e85a731d79f030fb7f7742e3e2e0ac828c3233a1",
+                "reference": "e85a731d79f030fb7f7742e3e2e0ac828c3233a1",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "kartik\\plugins\\tabs\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Extended Bootstrap Tabs with ability to align tabs in multiple ways, add borders, rotated titles, and more.",
+            "homepage": "https://github.com/kartik-v/bootstrap-tabs-x",
+            "keywords": [
+                "bootstrap",
+                "extended",
+                "jquery",
+                "modal",
+                "modal-tabs",
+                "tabs",
+                "tabs-x"
+            ],
+            "time": "2015-06-26T14:48:16+00:00"
+        },
+        {
+            "name": "kartik-v/dependent-dropdown",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/dependent-dropdown.git",
+                "reference": "1349e7f5816a65e89bc227098386aac5b2c89363"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/dependent-dropdown/zipball/1349e7f5816a65e89bc227098386aac5b2c89363",
+                "reference": "1349e7f5816a65e89bc227098386aac5b2c89363",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\plugins\\depdrop\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "A multi level dependent dropdown JQuery plugin that allows nested dependencies.",
+            "homepage": "https://github.com/kartik-v/dependent-dropdown",
+            "keywords": [
+                "dependent",
+                "dropdown",
+                "jquery",
+                "option",
+                "select"
+            ],
+            "time": "2017-08-01T11:43:55+00:00"
         },
         {
             "name": "kartik-v/yii2-dialog",
@@ -636,12 +728,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-grid.git",
-                "reference": "62728a88816af2dc93640f2b8e10e10871cf4ee2"
+                "reference": "11a7662c629e4c6fd7cc3bce6201bb977f9fb86e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/62728a88816af2dc93640f2b8e10e10871cf4ee2",
-                "reference": "62728a88816af2dc93640f2b8e10e10871cf4ee2",
+                "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/11a7662c629e4c6fd7cc3bce6201bb977f9fb86e",
+                "reference": "11a7662c629e4c6fd7cc3bce6201bb977f9fb86e",
                 "shasum": ""
             },
             "require": {
@@ -681,7 +773,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-09-13T12:37:07+00:00"
+            "time": "2017-10-03T13:33:32+00:00"
         },
         {
             "name": "kartik-v/yii2-krajee-base",
@@ -689,12 +781,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-krajee-base.git",
-                "reference": "bed522a930746e16391e4b207b7b2d82cc0ebab7"
+                "reference": "0cafe6376780cedcd00f52c9d82b172d5851f6b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/bed522a930746e16391e4b207b7b2d82cc0ebab7",
-                "reference": "bed522a930746e16391e4b207b7b2d82cc0ebab7",
+                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/0cafe6376780cedcd00f52c9d82b172d5851f6b0",
+                "reference": "0cafe6376780cedcd00f52c9d82b172d5851f6b0",
                 "shasum": ""
             },
             "require": {
@@ -732,7 +824,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-05-04T12:34:30+00:00"
+            "time": "2017-09-29T06:18:14+00:00"
         },
         {
             "name": "kartik-v/yii2-popover-x",
@@ -783,6 +875,59 @@
             "time": "2017-09-08T04:30:42+00:00"
         },
         {
+            "name": "kartik-v/yii2-tabs-x",
+            "version": "v1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-tabs-x.git",
+                "reference": "1e35056b49d48d103459be13d812a5cc9bc83b1b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-tabs-x/zipball/1e35056b49d48d103459be13d812a5cc9bc83b1b",
+                "reference": "1e35056b49d48d103459be13d812a5cc9bc83b1b",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/bootstrap-tabs-x": "~1.3",
+                "kartik-v/yii2-krajee-base": "~1.7"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\tabs\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "An extended bootstrap 3.0 tabs widget with ability to align tabs in multiple ways, add borders, rotated titles, and more.",
+            "homepage": "https://github.com/kartik-v/yii2-tabs-x",
+            "keywords": [
+                "bootstrap",
+                "extended",
+                "jquery",
+                "modal",
+                "modal-tabs",
+                "tabs",
+                "tabs-x"
+            ],
+            "time": "2016-09-09T11:33:18+00:00"
+        },
+        {
             "name": "kartik-v/yii2-widget-datetimepicker",
             "version": "v1.4.4",
             "source": {
@@ -830,6 +975,54 @@
                 "yii2"
             ],
             "time": "2017-06-08T05:53:28+00:00"
+        },
+        {
+            "name": "kartik-v/yii2-widget-typeahead",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-widget-typeahead.git",
+                "reference": "e369cd55cb2fb9d3a82b57ea6c9a62d69f14fb94"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-typeahead/zipball/e369cd55cb2fb9d3a82b57ea6c9a62d69f14fb94",
+                "reference": "e369cd55cb2fb9d3a82b57ea6c9a62d69f14fb94",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-krajee-base": "~1.7"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "kartik\\typeahead\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Enhanced Yii2 wrapper for the Twitter Typeahead plugin (sub repo split from yii2-widgets).",
+            "homepage": "https://github.com/kartik-v/yii2-widget-typeahead",
+            "keywords": [
+                "dropdown",
+                "extension",
+                "form",
+                "jquery",
+                "plugin",
+                "typeahead",
+                "widget",
+                "yii2"
+            ],
+            "time": "2015-06-28T18:05:41+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1441,16 +1634,16 @@
         },
         {
             "name": "codeception/base",
-            "version": "2.3.5",
+            "version": "2.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/base.git",
-                "reference": "eb3274a5dddeef8d8ca64b0414c0bf3c75bc9be9"
+                "reference": "5aeb2bc02819c89fa1538c2a413e245a421dbcf4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/base/zipball/eb3274a5dddeef8d8ca64b0414c0bf3c75bc9be9",
-                "reference": "eb3274a5dddeef8d8ca64b0414c0bf3c75bc9be9",
+                "url": "https://api.github.com/repos/Codeception/base/zipball/5aeb2bc02819c89fa1538c2a413e245a421dbcf4",
+                "reference": "5aeb2bc02819c89fa1538c2a413e245a421dbcf4",
                 "shasum": ""
             },
             "require": {
@@ -1463,7 +1656,7 @@
                 "phpunit/phpunit": ">4.8.20 <7.0",
                 "phpunit/phpunit-mock-objects": ">2.3 <5.0",
                 "sebastian/comparator": ">1.1 <3.0",
-                "sebastian/diff": "^1.4",
+                "sebastian/diff": ">=1.4 <3.0",
                 "stecman/symfony-console-completion": "^0.7.0",
                 "symfony/browser-kit": ">=2.7 <4.0",
                 "symfony/console": ">=2.7 <4.0",
@@ -1479,7 +1672,6 @@
                 "flow/jsonpath": "~0.2",
                 "league/factory-muffin": "^3.0",
                 "league/factory-muffin-faker": "^1.0",
-                "mongodb/mongodb": "^1.0",
                 "monolog/monolog": "~1.8",
                 "pda/pheanstalk": "~3.0",
                 "php-amqplib/php-amqplib": "~2.4",
@@ -1530,7 +1722,7 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2017-08-10T20:41:08+00:00"
+            "time": "2017-09-29T00:03:44+00:00"
         },
         {
             "name": "codeception/specify",
@@ -3664,6 +3856,7 @@
         "kartik-v/yii2-grid": 20,
         "kartik-v/yii2-editable": 20,
         "kartik-v/yii2-krajee-base": 20,
+        "kartik-v/dependent-dropdown": 20,
         "wbraganca/yii2-dynamicform": 20
     },
     "prefer-stable": false,

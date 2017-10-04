@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\helpers\Json;
 use app\models\material\MaterialComing;
 use app\models\material\MaterialComingSearch;
 use yii\web\Controller;
@@ -92,6 +93,26 @@ class MaterialComingController extends Controller
             ]);
         }
     }
+
+    public function actionCostList($id_material = null){
+        $out = [];
+        if($id_material != null) {
+
+            $sql = "SELECT cost, MAX(date_coming) AS date
+                    FROM materials_coming m
+                    WHERE m.id_material = $id_material
+                    GROUP BY cost
+            ";
+            $data = Yii::$app->db->createCommand($sql)->queryAll();
+
+            foreach ($data as $d) {
+                $out[] = ['value' => $d['cost'], 'date' => date("d.m.Y", strtotime($d['date']))];
+            }
+        }
+        echo Json::encode($out);
+//        return ArrayHelper::map($data, 'id', 'title');
+    }
+
 
     /**
      * Deletes an existing MaterialComing model.

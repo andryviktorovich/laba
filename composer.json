@@ -23,6 +23,9 @@
         "kartik-v/yii2-grid": "@dev",
         "kartik-v/yii2-editable": "@dev",
         "kartik-v/yii2-krajee-base": "dev-master",
+        "kartik-v/dependent-dropdown": "dev-master",
+        "kartik-v/yii2-widget-typeahead": "*",
+        "kartik-v/yii2-tabs-x": "*",
         "bower-asset/sweetalert": "*",
         "bower-asset/bootbox": "*",
         "wbraganca/yii2-dynamicform": "dev-master"

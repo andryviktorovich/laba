@@ -85,18 +85,25 @@ class BatchController extends Controller
             $valid = $model->validate();
             $valid = Model::validateMultiple($modelsDetail) && $valid;
 
+            $totalPercent = 0;
             if (isset($_POST['BatchDetailElement'])) {
                 foreach ($_POST['BatchDetailElement'] as $indexDetail => $details) {
                     foreach ($details as $indexElem => $elem) {
                         $data['BatchDetailElement'] = $elem;
                         $modelElem = new BatchDetailElement;
                         $modelElem->load($data);
+                        $totalPercent += $modelElem->percent;
                         $modelsDetailElement[$indexDetail][$indexElem] = $modelElem;
 //                        print_r($modelsDetailElement);
                         $valid = $modelElem->validate() && $valid;
                     }
                 }
             }
+            if($totalPercent > 100 || $totalPercent < 0){
+                $model->addError('elements', 'Сумма процентного отношения сырья в формуле не должна быть больше 100%.');
+                $valid = false;
+            }
+
 
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
@@ -166,7 +173,6 @@ class BatchController extends Controller
         if (!empty($modelsDetail)) {
             foreach ($modelsDetail as $indexDetail => $detail) {
                 $elements = $detail->elements;
-//                var_dump($elements);
                 $modelsDetailElement[$indexDetail] = (empty($elements)) ? [new BatchDetailElement] : $elements;
                 $oldElem = ArrayHelper::merge(ArrayHelper::index($elements, 'id'), $oldElem);
             }
@@ -185,6 +191,7 @@ class BatchController extends Controller
             $valid = $model->validate();
             $valid = Model::validateMultiple($modelsDetail) && $valid;
 
+            $totalPercent = 0;
             $elemIDs = [];
             if (isset($_POST['BatchDetailElement'])) {
                 foreach ($_POST['BatchDetailElement'] as $indexDetail => $deteils) {
@@ -193,10 +200,15 @@ class BatchController extends Controller
                         $data['BatchDetailElement'] = $elem;
                         $modelElem = (isset($elem['id']) && isset($oldElem[$elem['id']])) ? $oldElem[$elem['id']] : new BatchDetailElement();
                         $modelElem->load($data);
+                        $totalPercent += $modelElem->percent;
                         $modelsDetailElement[$indexDetail][$indexElem] = $modelElem;
                         $valid = $modelElem->validate() && $valid;
                     }
                 }
+            }
+            if($totalPercent > 100 || $totalPercent < 0){
+                $model->addError('elements', 'Сумма процентного отношения сырья в формуле не должна быть больше 100%.');
+                $valid = false;
             }
 
             $oldElemIDs = ArrayHelper::getColumn($oldElem, 'id');
@@ -301,7 +313,6 @@ class BatchController extends Controller
         $model->id_formula = null;
         $model->save();
         return $this->redirect(['view', 'id' => $model->batch]);
-//        return $this->redirect(['index']);
     }
 
     /**
