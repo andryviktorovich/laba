@@ -124,6 +124,9 @@ class Formula extends \app\base\BaseModel
 
     public static function findOne($condition)
     {
+        if(is_null($condition)) {
+            return null;
+        }
         $model = parent::findOne($condition);
         if($model->active) {
             return $model;

@@ -81,7 +81,6 @@ class BatchController extends Controller
             $modelsDetail = Model::createMultiple(BatchDetail::classname());
             Model::loadMultiple($modelsDetail, Yii::$app->request->post());
 
-            // validate person and houses models
             $valid = $model->validate();
             $valid = Model::validateMultiple($modelsDetail) && $valid;
 
@@ -144,8 +143,6 @@ class BatchController extends Controller
                 }
             }
         }
-
-
 
 //        if ($model->load(Yii::$app->request->post()) && $model->save()) {
 //            return $this->redirect(['view', 'id' => $model->batch]);
@@ -255,7 +252,7 @@ class BatchController extends Controller
 
                     if ($flag) {
                         $transaction->commit();
-                        return $this->redirect(['view', 'id' => $model->batch]);
+                        return $this->redirect(['update', 'id' => $model->batch]);
                     } else {
                         $transaction->rollBack();
                     }

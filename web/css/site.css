@@ -10,8 +10,8 @@ body {
     padding: 0 0 60px;
 }
 
-.wrap > .container {
-    padding: 70px 15px 20px;
+.wrap > .container-fluid {
+    padding-top: 55px;
 }
 
 .footer {
@@ -116,6 +116,10 @@ a.desc:after {
 /*
 newwwwww
 */
+
+/*
+    FORMULA form
+ */
 .group-batch {
     text-align: center;
 }
@@ -138,6 +142,9 @@ newwwwww
     background-color: #DFEE66 !important;
 }
 
+/*
+    Batch form
+ */
 
 .batch-form .table {
      margin-bottom: 0px;
@@ -194,6 +201,10 @@ newwwwww
 .batch-form .dynamicform_wrapper .panel-heading b {
     font-size: 16px;
 }
+
+/*
+   end Batch form !!!!!!!!!!!!!
+ */
 
 /*  typeahead style*/
 .typeahead,
@@ -264,9 +275,94 @@ newwwwww
 .tt-suggestion.tt-cursor {
     color: #fff;
     background-color: #0097cf;
-
 }
 
 .tt-suggestion p {
     margin: 0;
 }
+
+/*
+        WORK FORM
+ */
+.work-form .timetable_wrapper,
+.work-form .product_wrapper {
+    font-size: 12px !important;
+    margin-top: 27px;
+}
+
+.work-form .form-group {
+    margin-bottom: 0;
+}
+
+.work-form .help-block {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.work-form label {
+    margin-bottom: 0;
+    padding-top: 7px;
+}
+
+.work-form .timetable_wrapper,
+.work-form .product_wrapper {
+    font-size: 12px !important;
+}
+
+.work-form .timetable_wrapper .form-control,
+.work-form .product_wrapper .form-control {
+    font-size: 12px !important;
+}
+
+.work-form .timetable_wrapper .form-group,
+.work-form .product_wrapper .form-group {
+    margin-bottom: 0px;
+}
+
+.work-form .timetable_wrapper .help-block,
+.work-form .product_wrapper .help-block {
+    margin: 0px;
+}
+
+.work-form .timetable_wrapper .table > tbody > tr > td,
+.work-form .product_wrapper .table > tbody > tr > td {
+    padding: 5px
+}
+
+.work-form .timetable_wrapper .panel-heading b,
+.work-form .product_wrapper .panel-heading b{
+    font-size: 16px;
+}
+
+.work-form .timetable_wrapper .t-hours{
+    width: 85px;
+}
+.work-form .timetable_wrapper .t-action {
+    width: 30px;
+}
+.work-form .timetable_wrapper .t-position,
+.work-form .timetable_wrapper .t-employee {
+    width: calc((100% - 115px)/2);
+}
+
+.work-form .product_wrapper .p-finiched,
+.work-form .product_wrapper .p-reject,
+.work-form .product_wrapper .p-cleaning,
+.work-form .product_wrapper .p-starting,
+.work-form .product_wrapper .p-waste {
+    width: 80px;
+}
+
+.work-form .product_wrapper .p-batch,
+.work-form .product_wrapper .p-type_product,
+.work-form .product_wrapper .p-mark {
+    width: calc((100% - 430px)/3);
+}
+
+.work-form .product_wrapper .p-action {
+    width: 30px;
+}
+
+/*
+        END WORK FORM
+ */

@@ -28,32 +28,46 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => 'Производство',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
+        ],
+        'innerContainerOptions' => [
+                'class' => "container-fluid",
         ],
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'Марки', 'url' => ['/mark']],
-            ['label' => 'Формулы', 'url' => ['/formula']],
+//            ['label' => 'Home', 'url' => ['/site/index']],
+//            ['label' => 'About', 'url' => ['/site/about']],
+//            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Работы', 'url' => ['/work']],
             ['label' => 'Партии', 'url' => ['/batch']],
+            ['label' => 'Марки', 'url' => ['/mark']],
             ['label' => 'Сырье', 'items' => [
                 ['label' => 'Список сырья', 'url' => '/material'],
                 ['label' => 'Поставки сырья', 'url' => '/material-coming'],
                 ['label' => 'Расход сырья', 'url' => '/material-consumption'],
                 ['label' => 'Остаток на складе', 'url' => '/material-consumption/in-stock'],
+                ['label' => 'Поставщики', 'url' => '/provider'],
             ]],
             ['label' => 'Списки', 'items' => [
                 ['label' => 'Список цветов', 'url' => '/list-color'],
                 ['label' => 'Список добавок', 'url' => '/list-additive'],
                 ['label' => 'Список полимеров', 'url' => '/list-polymer'],
                 ['label' => 'Список добавок', 'url' => '/list-additive'],
+                ['label' => 'Список типов продукции', 'url' => '/list-type-product'],
+                ['label' => 'Сотрудники', 'url' => ['/employees']],
+            ]],
+            ['label' => 'Разное', 'items' => [
+                ['label' => 'Формулы', 'url' => ['/formula']],
+                ['label' => 'Сотрудники', 'url' => ['/employees']],
+                ['label' => 'Машины', 'url' => ['/machine']],
+                ['label' => 'Должности', 'url' => ['/position']],
+                ['label' => 'Готовая продукция', 'url' => ['/product']],
+                ['label' => 'Табель', 'url' => ['/timetable']],
             ]],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
@@ -72,7 +86,7 @@ AppAsset::register($this);
     NavBar::end();
     ?>
 
-    <div class="container">
+    <div class="container-fluid">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

@@ -28,6 +28,6 @@ $this->params['breadcrumbs'][] = 'Изменение формулы';
     <?= $this->render('_form', [
         'modelFormula' => $modelFormula,
         'modelFormulaElements' => $modelFormulaElements,
-        'action' => ['/formula/'.$action, 'id' => $modelFormula->id_formula, 'batch' => $modelBatch->batch],
+        'action' => ['/formula/'.$action, 'id' => $modelFormula->id_formula, 'batch' => $modelBatch->batch ?? null],
     ]) ?>
 </div>

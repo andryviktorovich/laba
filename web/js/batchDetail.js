@@ -91,31 +91,40 @@ function updateEven(item){
     $(item).find('.e-cost').bind('keyup change blur', function(){
         sumPercent();
     });
+
     $(item).find('input.e-cost').typeahead({
-                hint: false,
-                highlight: true,
-                minLength: 0
-            }, {
-                display: 'value',
-                source: function (query, syncResults, async) {
-                    material = $(this.$el).closest('.elem-item').find('select.e-material').val(); //('.elem-item'));
-                    $.post('/material-coming/cost-list' + (material ? '?id_material=' +  material: ''),{ 'id_material': material},
-                        function (response) {
-                            async(response);
-                        },
-                        'json'
-                    );
+        hint: false,
+        highlight: true,
+        minLength: 0
+    },{
+        display: 'value',
+        source: function (query, syncResults, async) {
+            material = $(this.$el).closest('.elem-item').find('select.e-material').val(); //('.elem-item'));
+            //console.log(material);
+            $.post('/material-coming/cost-list' + (material ? '?id_material=' + material : ''), {'id_material': material},
+                function (response) {
+                    //console.log(response);
+                    async(response);
                 },
-                templates: {
-                    empty: [
-                        '<div class="empty-message">',
-                        'Цены не найдены!',
-                        '</div>'
-                    ].join('\n'),
-                    suggestion: function (data) {
-                        return '<div><strong>' + data.value + '</strong> <small>(' + data.date + ')</small></div>';
-                    }
-                }
+                'json'
+            );
+        },
+
+        templates: {
+            empty: [
+                '<div class="empty-message">',
+                'Цены не найдены!',
+                '</div>'
+            ].join('\n'),
+            suggestion: function (data) {
+                return '<div><strong>' + data.value + '</strong> <small>(' + data.date + ')</small></div>';
+            }
+        }
+    });
+    $(item).find('input.e-cost').bind('typeahead:active', function(ev) {
+        //console.log('active');
+        ////var el = $(this);
+        //$(this).typeahead('open');
     });
 }
 

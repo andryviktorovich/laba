@@ -72,7 +72,7 @@ use kartik\datetime\DateTimePicker;
     </div><!-- end:row -->
     <div class="help-block"><?= $form->errorSummary($model);?></div>
 
-    <?= $this->render('_detail', [
+    <?= $this->render('_form_detail', [
         'form' => $form,
         'model' => $model,
         'modelsDetail' => $modelsDetail,

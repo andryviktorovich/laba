@@ -37,14 +37,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'release_date',
                 'format' =>  ['date', 'dd.MM.Y'],
             ],
-            // 'update_date',
-            // 'create_date',
-
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header'=>'Действия',
                 'headerOptions' => ['width' => '80'],
-                'template' => '{view} {update} {delete}{link}',
+                'template' => '{update} {delete}{link}',
             ],
         ],
     ]); ?>

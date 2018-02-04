@@ -15,7 +15,7 @@ use app\models\listmodels\ListConditionsMFI;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id_mark')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'id_mark')->textInput(['maxlength' => true, 'disabled'=>true]) ?>
 
     <?= $form->field($model, 'id_color')->dropDownList(ListColor::getListColor()) ?>
 

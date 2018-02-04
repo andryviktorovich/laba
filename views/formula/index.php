@@ -112,8 +112,8 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'template' => '{update} {delete} {choose}',
             'headerOptions' => ['style' => 'color:#337ab7'],
             'template' => '{view}{update}{delete}{choose}',
-            'urlCreator' => function ($action, $model, $key, $index) use ($batch) {//
-                return [$action, 'id' => $model->id_formula , 'batch'=> $batch->batch ];
+            'urlCreator' => function ($action, $model, $key, $index) {//
+                return [$action, 'id' => $model->id_formula ];
             },
         ]);
     }
@@ -124,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns'=>$gridColumns,
         'rowOptions'=>function($model) use ($batch){
-            if($batch->id_formula == $model->id_formula){
+            if(!empty($batch) && $batch->id_formula == $model->id_formula){
                 return ['class' => 'success'];
             }
         },
@@ -132,11 +132,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'toolbar' => [
             [
                 'content'=>
-                    Html::a('<i class="glyphicon glyphicon-plus"></i>', ['/formula/create', 'batch'=> $batch->batch ], [
+                    Html::a('<i class="glyphicon glyphicon-plus"></i>', ['/formula/create', 'batch'=> $batch->batch ?? null ], [
                         'class' => 'btn btn-success',
                         'title' => Yii::t('app', 'Добавить фомулу')
                     ]) . ' ' .
-                    Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['/formula/', 'batch'=> $batch->batch ], [
+                    Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['/formula/', 'batch'=> $batch->batch ?? null ], [
                         'class' => 'btn btn-default',
                         'title' => Yii::t('app', 'Обновить таблицу')
                     ]),

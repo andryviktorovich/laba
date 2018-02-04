@@ -8,8 +8,8 @@ use yii\helpers\Html;
 
 $this->title = 'Изменения партии: ' . $model->batch;
 $this->params['breadcrumbs'][] = ['label' => 'Партии', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->batch, 'url' => ['view', 'id' => $model->batch]];
-$this->params['breadcrumbs'][] = 'Изменение';
+//$this->params['breadcrumbs'][] = ['label' => $model->batch, 'url' => ['view', 'id' => $model->batch]];
+$this->params['breadcrumbs'][] = 'Изменение: ' .  $model->batch;
 ?>
 <div class="batch-update">
 

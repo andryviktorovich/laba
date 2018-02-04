@@ -96,6 +96,14 @@ class Batch extends \app\base\BaseModel
         return $this->hasMany(BatchDetail::className(), ['batch' => 'batch']);
     }
 
+    public function getCalculationDetail(){
+        $sql = "SELECT
+                FROM batch_detail bd, batch_detail_elements be
+
+
+                WHERE bd.id = be.id_detail";
+    }
+
     public function delete()
     {
         $this->active = self::NO_ACTIVE;
@@ -104,6 +112,9 @@ class Batch extends \app\base\BaseModel
 
     public static function findOne($condition)
     {
+        if(is_null($condition)){
+            return null;
+        }
         $model = parent::findOne($condition);
         if($model->active) {
             return $model;
